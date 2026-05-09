@@ -359,7 +359,7 @@ export const slides = [
   {
     section: "Thực hành",
     kicker: "Thực hành tốt",
-    title: "Checklist giúp pipeline dễ vận hành",
+    title: "Checklist",
     body: "Một pipeline tốt không cần phức tạp. Nó cần rõ ràng, chạy ổn định và giúp team biết lỗi nằm ở đâu ngay khi có vấn đề.",
     keyMessage: "Dùng checklist này như một bài tập: nhìn vào pipeline và trả lời được bước nào đang chạy, lỗi ở đâu, artifact nào được tạo ra và cần làm gì tiếp theo.",
     points: ["Pipeline ngắn", "Báo lỗi sớm", "Build một lần", "Log dễ đọc", "Không ghi secret trực tiếp", "Có rollback"],
