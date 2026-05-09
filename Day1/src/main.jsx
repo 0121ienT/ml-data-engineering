@@ -61,7 +61,7 @@ function VisualImagePanel({ image, className = "visualImagePanel" }) {
   return (
     <figure className={className}>
       <img src={image.src} alt={image.alt} />
-      <figcaption>{image.source}</figcaption>
+      {image.source ? <figcaption>{image.source}</figcaption> : null}
     </figure>
   );
 }
@@ -138,7 +138,7 @@ function ConceptSlide({ slide }) {
       <div className="support">
         <KeyMessage slide={slide} />
         <Details details={slide.details} />
-        <Points points={slide.points} />
+        {slide.hidePoints ? null : <Points points={slide.points} />}
       </div>
     </section>
   );

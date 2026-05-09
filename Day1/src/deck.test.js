@@ -68,7 +68,6 @@ test("slide deck incorporates concepts from the full CI/CD curriculum document",
   assert.match(combined, /GitOps/);
   assert.match(combined, /Testing Pyramid/);
   assert.match(combined, /Artifact Repository/);
-  assert.match(combined, /Blue-Green|Canary/);
   assert.match(combined, /Capstone|bài tập/i);
 });
 

@@ -74,7 +74,7 @@ const imageMap = {
   basicHighLevelDesign: {
     src: publicAsset("/images/basic-high-level-design.png"),
     alt: "Ví dụ high-level design cơ bản cho hệ thống ML và Data",
-    source: "Ảnh bạn cung cấp",
+    source: "",
   },
 };
 
@@ -101,6 +101,7 @@ export const slides = [
     body: "Mục tiêu của lớp là giúp bạn hiểu bức tranh tổng thể, biết cách thiết kế hệ thống và trình bày ý tưởng rõ ràng hơn.",
     keyMessage: "Bạn sẽ biết cách đi từ một bài toán ML/Data đến bản high-level design vẽ bằng Excalidraw và kế hoạch triển khai có thể giải thích được.",
     points: ["Xây dựng hệ thống ML/Data end-to-end", "Vẽ high-level design bằng Excalidraw", "Trình bày hệ thống rõ ràng"],
+    hidePoints: true,
     details: [
       { label: "Xây dựng", text: "Biết các bước chính để xây dựng và triển khai một hệ thống ML/Data từ đầu đến cuối." },
       { label: "Thiết kế", text: "Biết cách vẽ high-level design để người khác nhìn vào hiểu được hệ thống hoạt động ra sao." },
@@ -352,21 +353,6 @@ export const slides = [
     image: imageMap.planning,
     layout: "matrix",
     tone: "green",
-  },
-  {
-    section: "Nâng cao",
-    kicker: "Cloud-Native Delivery",
-    title: "Docker, Kubernetes và GitOps",
-    body: "CI/CD hiện đại thường gồm container images, Kubernetes deployment và GitOps systems như ArgoCD hoặc FluxCD.",
-    keyMessage: "GitOps xem Git là source of truth cho code, infrastructure, policy và deployment state.",
-    points: ["Docker image", "Registry", "Kubernetes", "Helm", "Blue-Green / Canary", "Observability"],
-    details: [
-      { label: "Build once", text: "Tạo một image hoặc artifact, lưu trong registry rồi promote qua các môi trường." },
-      { label: "Progressive delivery", text: "Dùng rolling, Blue-Green hoặc Canary khi production risk cần kiểm soát." },
-    ],
-    image: imageMap.dataCenter,
-    layout: "flow",
-    tone: "teal",
   },
   {
     section: "Thực hành",
