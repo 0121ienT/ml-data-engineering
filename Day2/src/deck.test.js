@@ -44,8 +44,13 @@ test("deck is a Docker beginner lesson in Vietnamese", () => {
 test("deck includes Docker-specific visual slide types", () => {
   assert.ok(slides.some((slide) => slide.layout === "command" && slide.commands?.length >= 2));
   assert.ok(slides.some((slide) => slide.layout === "comparison" && /Docker.*VM|VM.*Docker/i.test(textOf(slide))));
-  assert.ok(slides.some((slide) => slide.layout === "exercise" && slide.checklist?.length >= 3));
   assert.ok(slides.some((slide) => slide.layout === "closing" && slide.roadmap?.length >= 3));
+});
+
+test("deck does not include exercise slides yet", () => {
+  assert.ok(slides.every((slide) => slide.section !== "Exercise"));
+  assert.ok(slides.every((slide) => slide.layout !== "exercise"));
+  assert.doesNotMatch(slides.map(textOf).join(" "), /Bài tập|Checklist:/i);
 });
 
 test("public Day2 text avoids old session wording", () => {
