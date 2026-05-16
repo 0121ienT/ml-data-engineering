@@ -37,7 +37,6 @@ const iconMap = {
   Pull: Package,
   Read: FileCode2,
   Run: Play,
-  Runtime: Server,
   Tag: Package,
   Verify: CheckCircle2,
 };
@@ -124,9 +123,9 @@ function CoverVisual() {
 function AnalogyVisual({ type }) {
   const labels =
     type === "analogy"
-      ? ["App", "Runtime", "Dependency"]
+      ? ["App", "Dependency", "Cấu hình"]
       : type === "laptop-container"
-        ? ["Code", "Image", "Same runtime"]
+        ? ["Code", "Image", "Cùng môi trường"]
         : ["Build", "Run", "Learn"];
 
   return (
@@ -258,7 +257,7 @@ function FlowSlide({ slide }) {
         <p className="body">{slide.body}</p>
       </div>
       <FlowDiagram points={slide.points} />
-      <div className="flowFooter">
+      <div className={`flowFooter ${slide.hideKeyMessage ? "flowFooterWide" : ""}`}>
         <KeyMessage slide={slide} />
         <Details details={slide.details} />
       </div>

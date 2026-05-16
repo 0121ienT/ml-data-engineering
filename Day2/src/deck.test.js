@@ -25,6 +25,20 @@ const textOf = (slide) =>
     ...(slide.roadmap ?? []),
   ].join(" ");
 
+const visibleProseOf = (slide) =>
+  [
+    slide.section,
+    slide.kicker,
+    slide.title,
+    slide.body,
+    slide.keyMessage,
+    ...(slide.points ?? []),
+    ...(slide.details ?? []).flatMap((detail) => [detail.label, detail.text]),
+    ...(slide.commands ?? []).flatMap((command) => [command.label, command.resultLabel, command.result]),
+    ...(slide.checklist ?? []),
+    ...(slide.roadmap ?? []),
+  ].join(" ");
+
 test("deck is a Docker beginner lesson in Vietnamese", () => {
   assert.ok(slides.length >= 14);
   assert.equal(slides[0].title, "Docker cơ bản cho người mới");
@@ -115,12 +129,33 @@ test("container concept slide explains the idea in non-technical language", () =
   assert.match(containerText, /gói chạy app/);
   assert.match(containerText, /những thứ cần thiết để app chạy/);
   assert.match(containerText, /dễ mang sang máy khác/);
-  assert.match(containerText, /Khái niệm thông thường/);
-  assert.match(containerText, /Ví dụ đời sống/);
-  assert.match(containerText, /hộp cơm chuẩn bị sẵn/);
-  assert.match(containerText, /món chính, muỗng và nước chấm/);
-  assert.doesNotMatch(containerText, /hộp đồ nghề|phép màu/i);
+  assert.equal(containerSlide.hideKeyMessage, true);
+  assert.equal(containerSlide.details.length, 1);
+  assert.match(containerText, /Tóm tắt/);
+  assert.doesNotMatch(containerText, /Ví dụ đời sống|hộp cơm|hộp đồ nghề|phép màu/i);
   assert.doesNotMatch(containerText, /kernel|process|filesystem|network/i);
+});
+
+test("early concept slides are rewritten for the requested presentation flow", () => {
+  const combinedProse = slides.map(visibleProseOf).join(" ");
+  const comparisonSlide = slides[5];
+  const flowSlide = slides[6];
+
+  assert.doesNotMatch(combinedProse, /;/);
+
+  assert.equal(comparisonSlide.title, "Docker và VM khác nhau thế nào?");
+  assert.match(textOf(comparisonSlide), /mỗi container chỉ đóng gói app/i);
+  assert.match(textOf(comparisonSlide), /VM giống một máy tính riêng/);
+  assert.match(textOf(comparisonSlide), /Dùng Docker khi/);
+  assert.match(textOf(comparisonSlide), /Dùng VM khi/);
+
+  assert.equal(flowSlide.title, "Dockerfile, Image, Container");
+  assert.equal(flowSlide.hideKeyMessage, true);
+  assert.deepEqual(flowSlide.points, ["Dockerfile", "Image", "Container"]);
+  assert.deepEqual(flowSlide.details.map((detail) => detail.label), ["Dockerfile", "Image", "Container"]);
+  for (const detail of flowSlide.details) {
+    assert.ok(detail.text.length >= 45, `${detail.label} should have a definition underneath`);
+  }
 });
 
 test("Docker setup slides appear immediately after the cover slide", () => {
@@ -164,6 +199,7 @@ test("two basic Docker command slides appear before the demo and list each comma
   for (const slide of commandSlides) {
     assert.equal(slide.layout, "command");
     assert.ok(slide.commands.length >= 4, `${slide.title} should list enough commands`);
+    assert.ok(slide.commands.length <= 4, `${slide.title} should not overflow vertically`);
     for (const command of slide.commands) {
       assert.equal(command.resultLabel, "Chức năng");
       assert.ok(command.result.length > 20, `${command.code} should explain its function`);
@@ -242,9 +278,12 @@ test("flow slides emphasize Docker diagrams with short labels", () => {
 
 test("flow slide footer keeps definition cards on one row", () => {
   const styles = fs.readFileSync(path.resolve("src/styles.css"), "utf8");
+  const main = fs.readFileSync(path.resolve("src/main.jsx"), "utf8");
 
   assert.match(styles, /\.flowFooter \.details\s*{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s);
   assert.match(styles, /\.flowFooter \.details article\s*{[^}]*min-height:\s*auto/s);
+  assert.match(main, /flowFooterWide/);
+  assert.match(styles, /\.flowFooterWide\s*{[^}]*grid-template-columns:\s*1fr/s);
 });
 
 test("each slide carries metadata for the modern Docker theme", () => {
@@ -255,7 +294,8 @@ test("each slide carries metadata for the modern Docker theme", () => {
     assert.ok(slide.tone.length > 2, `${slide.title} should define a tone`);
     assert.ok(slide.keyMessage.length > 20, `${slide.title} should define a key message`);
     assert.ok(slide.points.length >= 3 && slide.points.length <= 5, `${slide.title} should define concise points`);
-    assert.ok(slide.details.length >= 2, `${slide.title} should define supporting details`);
+    const minimumDetails = slide.title === "Container là gì" ? 1 : 2;
+    assert.ok(slide.details.length >= minimumDetails, `${slide.title} should define supporting details`);
   }
 });
 

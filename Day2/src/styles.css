@@ -487,6 +487,10 @@ code {
   align-items: stretch;
 }
 
+.flowFooterWide {
+  grid-template-columns: 1fr;
+}
+
 .flowFooter .keyMessage {
   align-self: stretch;
 }
