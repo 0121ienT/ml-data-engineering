@@ -420,8 +420,8 @@ code {
 }
 
 .slideFlow {
-  grid-template-rows: auto 1fr auto;
-  gap: 1.2rem;
+  grid-template-rows: auto auto auto;
+  gap: 0.95rem;
 }
 
 .flowHeader {
@@ -430,7 +430,7 @@ code {
 
 .flowHeader h1 {
   max-width: 13ch;
-  font-size: clamp(2.1rem, 3.9vw, 4.7rem);
+  font-size: clamp(2.1rem, 3.55vw, 4.25rem);
 }
 
 .flowHeader .body {
@@ -449,7 +449,7 @@ code {
 .flowStep {
   display: grid;
   place-items: center;
-  min-height: 8.6rem;
+  min-height: 7.3rem;
   padding: 1rem;
   border: 1px solid rgba(13, 183, 237, 0.24);
   border-radius: 14px;
@@ -482,8 +482,28 @@ code {
 
 .flowFooter {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 0.82fr 1.18fr;
   gap: 1rem;
+  align-items: stretch;
+}
+
+.flowFooter .keyMessage {
+  align-self: stretch;
+}
+
+.flowFooter .details {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.72rem;
+}
+
+.flowFooter .details article {
+  min-height: auto;
+  padding: 0.78rem;
+}
+
+.flowFooter .details p {
+  font-size: clamp(0.62rem, 0.72vw, 0.8rem);
+  line-height: 1.32;
 }
 
 .slideComparison {

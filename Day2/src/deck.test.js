@@ -69,6 +69,13 @@ test("deck includes Docker installation guidance for Windows and Linux", () => {
   assert.match(combined, /docker run hello-world/);
 });
 
+test("Docker setup slides appear immediately after the cover slide", () => {
+  assert.equal(slides[1].section, "Setup");
+  assert.equal(slides[1].kicker, "Windows");
+  assert.equal(slides[2].section, "Setup");
+  assert.equal(slides[2].kicker, "Linux");
+});
+
 test("example app includes API, web, database, cache, and monitoring assets", () => {
   const root = path.resolve("example-app");
   const requiredFiles = [
@@ -111,6 +118,13 @@ test("flow slides emphasize Docker diagrams with short labels", () => {
   for (const slide of slides) {
     assert.ok(slide.points.length <= 5, `${slide.title} should stay readable with 3-5 points`);
   }
+});
+
+test("flow slide footer keeps definition cards on one row", () => {
+  const styles = fs.readFileSync(path.resolve("src/styles.css"), "utf8");
+
+  assert.match(styles, /\.flowFooter \.details\s*{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(styles, /\.flowFooter \.details article\s*{[^}]*min-height:\s*auto/s);
 });
 
 test("each slide carries metadata for the modern workshop theme", () => {

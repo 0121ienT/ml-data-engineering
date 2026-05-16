@@ -1,4 +1,4 @@
-export const slides = [
+const slideDefinitions = [
   {
     section: "Workshop",
     kicker: "Docker 101",
@@ -33,7 +33,7 @@ export const slides = [
   {
     section: "Concept",
     kicker: "Khái niệm nền",
-    title: "Container là một hộp chạy app",
+    title: "Container là gì",
     body: "Container giống một hộp có app, runtime và dependency cần thiết. Nó dùng chung kernel của máy host nhưng tách biệt process, filesystem và network ở mức cần thiết.",
     keyMessage: "Image là đơn vị đóng gói bất biến; container là thực thể runtime được khởi tạo từ image.",
     points: ["App", "Runtime", "Dependency", "Isolated"],
@@ -365,6 +365,11 @@ export const slides = [
     tone: "slate",
   },
 ];
+
+const setupSlides = slideDefinitions.filter((slide) => slide.section === "Setup");
+const nonSetupSlides = slideDefinitions.slice(1).filter((slide) => slide.section !== "Setup");
+
+export const slides = [slideDefinitions[0], ...setupSlides, ...nonSetupSlides];
 
 export function clampSlideIndex(index) {
   return Math.min(Math.max(index, 0), slides.length - 1);
