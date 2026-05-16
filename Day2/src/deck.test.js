@@ -161,11 +161,12 @@ test("container concept slide explains the idea in non-technical language", () =
   assert.match(main, /detailsSingle/);
   assert.match(styles, /\.detailsSingle\s*{[^}]*grid-template-columns:\s*1fr/s);
   assert.doesNotMatch(containerText, /Ví dụ đời sống|hộp cơm|hộp đồ nghề|phép màu/i);
-  assert.doesNotMatch(containerText, /kernel|process|filesystem|network/i);
+  assert.match(containerText, /không mang cả hệ điều hành đầy đủ/);
+  assert.doesNotMatch(containerText, /process|filesystem|network/i);
 });
 
 test("demo slides remove introductory detail cards where requested", () => {
-  const startDemo = slides.find((slide) => slide.title === "Bật stack demo bằng Compose");
+  const startDemo = slides.find((slide) => slide.title === "Bật demo bằng Compose");
   const apiDemo = slides.find((slide) => slide.title === "Gọi API và tạo order");
   const combined = [textOf(startDemo), textOf(apiDemo)].join(" ");
 
@@ -342,7 +343,7 @@ test("each slide carries metadata for the modern Docker theme", () => {
     assert.ok(slide.tone.length > 2, `${slide.title} should define a tone`);
     assert.ok(slide.keyMessage.length > 20, `${slide.title} should define a key message`);
     assert.ok(slide.points.length >= 3 && slide.points.length <= 5, `${slide.title} should define concise points`);
-    const detailOptionalTitles = new Set(["Bật stack demo bằng Compose", "Gọi API và tạo order"]);
+    const detailOptionalTitles = new Set(["Bật demo bằng Compose", "Gọi API và tạo order"]);
     const minimumDetails = detailOptionalTitles.has(slide.title) ? 0 : slide.title === "Container là gì" ? 1 : 2;
     assert.ok(slide.details.length >= minimumDetails, `${slide.title} should define supporting details`);
   }
