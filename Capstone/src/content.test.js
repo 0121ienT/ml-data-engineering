@@ -34,13 +34,10 @@ test("each group exposes exactly three new features with constraints", () => {
   }
 });
 
-test("hand gesture group is flagged with hard features and missing repo", () => {
+test("hand gesture group exists and exposes three features", () => {
   const handGesture = groups.find((group) => /Hand Gesture/i.test(group.name));
   assert.ok(handGesture, "Hand Gesture group must exist");
-  assert.equal(handGesture.repo, null);
-  for (const feature of handGesture.features) {
-    assert.ok(feature.hardLabel, `${feature.title} should be marked as hard`);
-  }
+  assert.equal(handGesture.features.length, 3);
 });
 
 test("ci/cd pipeline covers the required ten stages", () => {

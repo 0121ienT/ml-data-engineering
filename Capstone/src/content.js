@@ -1,9 +1,9 @@
 export const meta = {
-  title: "Bài tập lớn — Mở rộng tính năng & CI/CD Auto-Deploy",
+  title: "Đề bài: Mở rộng tính năng & CI/CD Auto-Deploy",
   intro:
-    "Mỗi nhóm tiếp tục đề tài học kỳ trước, được giao thêm 3 tính năng mới và phải thiết kế CI/CD pipeline tự động deploy lên cloud được cung cấp.",
+    "Có 4 đề tài để chọn. Mỗi nhóm chọn 1 đề tài, bổ sung 3 tính năng mới và thiết kế CI/CD pipeline tự động deploy lên cloud được cấp.",
   emphasis:
-    "Tiêu chí then chốt: không chỉ chạy được mà phải thiết kế rõ ràng — chỉ rõ giả định, ràng buộc, latency budget và cách rollback.",
+    "Đánh giá tập trung vào năng lực thiết kế. Giả định, ràng buộc, latency budget và phương án rollback phải được nêu rõ trước khi viết code.",
 };
 
 export const pipelineStages = [
@@ -29,17 +29,17 @@ export const pipelineStages = [
   },
   {
     stage: "Push registry",
-    requirement: "Push image lên ECR hoặc Docker Hub với 2 tag git-sha và latest",
+    requirement: "Push image lên registry với 2 tag git-sha và latest",
     failFast: "credential sai",
   },
   {
     stage: "Integration test",
-    requirement: "Compose lên DB/cache giả lập, gọi smoke test API thật",
+    requirement: "Compose lên DB và cache giả lập, gọi smoke test API thật",
     failFast: "smoke test không 200",
   },
   {
     stage: "Deploy staging",
-    requirement: "SSH hoặc SSM vào EC2 staging, pull image, docker compose up -d",
+    requirement: "Pull image về EC2 staging và khởi động bằng docker compose",
     failFast: "health check fail trong 60s",
   },
   {
@@ -54,45 +54,43 @@ export const pipelineStages = [
   },
   {
     stage: "Notify",
-    requirement: "Gửi message Discord, Slack hoặc Telegram khi deploy xong hoặc fail",
+    requirement: "Gửi message khi deploy xong hoặc fail",
     failFast: "—",
   },
 ];
 
 export const deliverables = [
-  "Sơ đồ pipeline vẽ bằng Excalidraw — chỉ rõ stage, artifact đi qua từng bước và nơi lưu secret.",
-  "File THREAT-MODEL.md ngắn: tối thiểu 3 mối đe doạ chính kèm biện pháp giảm thiểu.",
-  "File ROLLBACK.md: lệnh cụ thể để rollback về tag cũ trong vài phút.",
+  "Sơ đồ pipeline chỉ rõ stage, artifact đi qua từng bước và nơi lưu secret.",
+  "File THREAT-MODEL.md ngắn với tối thiểu 3 mối đe doạ chính và biện pháp giảm thiểu.",
+  "File ROLLBACK.md với lệnh cụ thể để rollback về tag cũ trong vài phút.",
 ];
 
 export const cloudResources = [
-  "1 EC2 t3.large cho app prod; nhóm cần GPU thì đăng ký trước để được cấp g4dn.xlarge.",
-  "1 EC2 t3.medium riêng làm staging.",
+  "1 EC2 t3.large cho app prod; đề tài cần GPU đăng ký để được cấp g4dn.xlarge.",
+  "1 EC2 t3.medium làm staging.",
   "1 ECR private repo cho mỗi nhóm.",
   "1 S3 bucket cho mỗi nhóm để lưu model, log và backup.",
-  "RDS Postgres db.t3.micro cho nhóm cần database; nhóm Hand Gesture xin thêm nếu cần.",
-  "ElastiCache Redis cache.t3.micro cho nhóm cần cache.",
-  "Domain test gắn vào IP và port của EC2, mở qua Security Group.",
+  "RDS Postgres db.t3.micro cho đề tài có database.",
+  "ElastiCache Redis cache.t3.micro cho đề tài có cache.",
+  "Domain test gắn vào IP và port của EC2 qua Security Group.",
 ];
 
 export const cloudNote =
-  "Tất cả tài nguyên gắn tag Owner và Course để dễ quản lý. Nhóm phải tự stop EC2 ngoài giờ làm bài, có script kèm phần Notify.";
+  "Tài nguyên gắn tag để theo dõi chi phí. Nhóm phải tự stop EC2 ngoài giờ làm bài và đính kèm script tắt trong phần Notify.";
 
 export const groups = [
   {
     id: "nhom-1",
     number: 1,
     name: "Phân loại cảm xúc",
-    codename: "BTL-Nhom1",
     tone: "violet",
-    repo: "https://github.com/HIT-PYTHON-2026/BTL-Nhom1",
     summary:
-      "ResNet phân loại cảm xúc khuôn mặt và YOLOv8-nano detect mặt. Backend FastAPI, frontend HTML/CSS/JS, đã có upload ảnh, livestream camera và mini-game.",
+      "Hệ thống nhận diện cảm xúc từ ảnh và video bằng mô hình phân loại trên khuôn mặt, có backend HTTP và frontend web cho upload ảnh cùng livestream camera.",
     features: [
       {
         title: "Multi-modal Emotion Fusion: Khuôn mặt + Giọng nói",
         description:
-          "Thêm nhánh xử lý âm thanh song song với khuôn mặt. Stream micro qua WebRTC vào một mô hình Speech Emotion Recognition trên window 2 giây có overlap. Sau đó fusion với output video stream để cho ra một emotion score chung kèm độ tin cậy.",
+          "Thêm nhánh xử lý âm thanh song song với khuôn mặt. Stream micro vào một mô hình Speech Emotion Recognition trên window 2 giây có overlap. Sau đó fusion với output video stream để cho ra một emotion score chung kèm độ tin cậy.",
         constraints: [
           "Đồng bộ timestamp audio và video frame trong khoảng 150 ms và mô tả cách xử lý drift.",
           "So sánh early fusion và late fusion, chọn 1 cách và giải thích ưu nhược điểm.",
@@ -103,9 +101,9 @@ export const groups = [
       {
         title: "Emotion Drift Monitoring + Online Retraining",
         description:
-          "Mỗi prediction được log kèm confidence và embedding. Build dashboard drift detection theo tuần so với phân phối lúc train. Khi vượt ngưỡng thì trích sample khó vào S3, mở review UI gắn nhãn, retrain và deploy shadow trước khi promote.",
+          "Mỗi prediction được log kèm confidence và embedding. Build dashboard drift detection theo tuần so với phân phối lúc train. Khi vượt ngưỡng thì trích sample khó ra storage, mở review UI gắn nhãn, retrain và deploy shadow trước khi promote.",
         constraints: [
-          "Vẽ data flow Excalidraw từ inference log đến drift score, retrain, shadow và promote, có rõ điểm kill-switch.",
+          "Vẽ data flow từ inference log đến drift score, retrain, shadow và promote, có rõ điểm kill-switch.",
           "Schema feedback DB phải có audit trail: ai gắn nhãn, khi nào và lý do.",
           "Canary metric rõ ràng: model mới chỉ promote khi accuracy không tụt quá 2% trên holdout cố định.",
         ],
@@ -113,11 +111,11 @@ export const groups = [
       {
         title: "Multi-tenant Analytics Dashboard",
         description:
-          "Cho phép tổ chức đăng ký 1 workspace. Mỗi workspace có RBAC, heatmap cảm xúc theo lớp hoặc ca, time-series xu hướng theo ngày và alert engine khi tỷ lệ negative vượt threshold.",
+          "Tổ chức đăng ký 1 workspace. Mỗi workspace có RBAC, heatmap cảm xúc theo lớp hoặc ca, time-series xu hướng theo ngày và alert engine khi tỷ lệ negative vượt threshold.",
         constraints: [
           "Privacy: không lưu ảnh khuôn mặt raw quá 7 ngày, chỉ giữ embedding đã hash kèm metadata. Mô tả cách xoá tự động.",
           "Multi-tenancy: chọn pattern phù hợp và bảo vệ lựa chọn theo chi phí và mức cô lập dữ liệu.",
-          "Integration test giả lập 2 workspace truy vấn cùng lúc, đảm bảo không leak dữ liệu chéo.",
+          "Integration test giả lập 2 workspace truy vấn cùng lúc và đảm bảo không leak dữ liệu chéo.",
         ],
       },
     ],
@@ -126,18 +124,16 @@ export const groups = [
     id: "nhom-2",
     number: 2,
     name: "Hệ thống nhận diện biển số xe thông minh",
-    codename: "Team2_Parking_Detection",
     tone: "amber",
-    repo: "https://github.com/HIT-PYTHON-2026/Team2_Parking_Detection",
     summary:
-      "YOLOv8 detect xe và slot trống, dynamic calibration theo độ phân giải. Backend FastAPI, dashboard Streamlit, đã có /health /detect /stream.",
+      "Hệ thống detect xe và slot trống bằng object detection, có dynamic calibration theo độ phân giải camera, backend HTTP và dashboard hiển thị trạng thái bãi.",
     features: [
       {
         title: "Nhận diện biển số + Vehicle Registry + Billing",
         description:
-          "Sau khi YOLOv8 detect xe, crop bounding box biển số rồi preprocess và đưa vào OCR phù hợp biển Việt Nam. Match kết quả vào DB xe đăng ký, ghi log entry và exit, tính phí gửi theo bảng giá có thể cấu hình.",
+          "Sau khi detect xe, crop biển số rồi đưa vào OCR phù hợp biển Việt Nam. Match kết quả vào DB xe đăng ký, ghi log entry và exit, tính phí gửi theo bảng giá có thể cấu hình.",
         constraints: [
-          "Hậu xử lý kết quả OCR bằng whitelist ký tự cộng thêm so khớp gần đúng với danh sách xe đã đăng ký.",
+          "Hậu xử lý OCR bằng whitelist ký tự cộng so khớp gần đúng với danh sách xe đã đăng ký.",
           "Chống double-billing: cùng xe quét nhiều khung liên tiếp chỉ tạo 1 session. Mô tả state machine ENTER, INSIDE, EXIT kèm timeout.",
           "Báo cáo thử nghiệm tối thiểu 20 ảnh khó tự chụp, bao gồm xe khuất một phần biển hoặc ánh sáng yếu.",
           "Schema billing có 4 bảng vehicle, session, rate_card và transaction kèm migration script.",
@@ -146,7 +142,7 @@ export const groups = [
       {
         title: "Multi-camera Fusion + Cross-frame Tracking",
         description:
-          "Nhiều camera quay cùng 1 bãi từ các góc khác nhau. Stream qua message queue thay vì HTTP trực tiếp. Dùng DeepSORT hoặc ByteTrack để track xuyên khung và xuyên camera, không đếm trùng khi xe di chuyển giữa các zone.",
+          "Nhiều camera quay cùng 1 bãi từ các góc khác nhau. Stream qua message queue thay vì HTTP trực tiếp. Track xuyên khung và xuyên camera, không đếm trùng khi xe di chuyển giữa các zone.",
         constraints: [
           "Đồng bộ camera qua NTP và mô tả cách bù khi camera mất kết nối tạm thời.",
           "Calibration đưa pixel của frame về sơ đồ 2D của bãi. Có tool calibration để click các điểm gốc lúc setup.",
@@ -157,9 +153,9 @@ export const groups = [
       {
         title: "Predictive Availability + Slot Recommendation",
         description:
-          "Một model time-series dự đoán độ trống của bãi ở các mốc 15, 30 và 60 phút tới, dựa trên lịch sử và thời tiết. User hỏi tới sau bao nhiêu phút thì bãi còn không, hệ thống trả về xác suất kèm slot gợi ý.",
+          "Một model time-series dự đoán độ trống của bãi ở các mốc 15, 30 và 60 phút tới dựa trên lịch sử và thời tiết. User hỏi tới sau bao nhiêu phút thì bãi còn không, hệ thống trả về xác suất kèm slot gợi ý.",
         constraints: [
-          "Feature engineering rõ ràng: hour-of-day, day-of-week, holiday và thời tiết. Vẽ tầm quan trọng của feature.",
+          "Feature engineering rõ ràng với các yếu tố thời gian, ngày lễ và thời tiết. Vẽ tầm quan trọng của feature.",
           "Versioning model rõ: nếu model mới predict lệch quá ngưỡng MAE trong tuần đầu thì tự rollback.",
           "Online evaluation: log mọi prediction kèm thời điểm dự đoán và so với thực tế khi tới mốc, vẽ MAE chart.",
           "Latency query phía user dưới 300 ms khi cache hit.",
@@ -170,22 +166,18 @@ export const groups = [
   {
     id: "nhom-3",
     number: 3,
-    name: "Hand Gesture (chưa có repo)",
-    codename: "no-repo-yet",
+    name: "Hand Gesture",
     tone: "crimson",
-    repo: null,
     summary:
-      "Vì chưa có repo, nhóm bắt đầu từ Day 0 và bị chấm khắt khe hơn về design doc. Mỗi tính năng phải có sơ đồ kiến trúc, bảng API, schema dữ liệu và threat model riêng.",
-    note: "Vì 3 tính năng cố ý phức tạp, nhóm được phép chọn 2 trên 3 để làm sâu nhưng phải viết design doc cho cả 3. Quyết định bỏ tính năng nào phải có lý do kỹ thuật rõ ràng.",
+      "Hệ thống nhận diện và sử dụng cử chỉ tay từ webcam. Đề tài này không có codebase nền sẵn nên cần đầu tư nhiều hơn cho phần thiết kế trước khi triển khai.",
     features: [
       {
         title: "Vietnamese Sign Language Translator dạng streaming",
         description:
-          "Stream webcam đi qua MediaPipe Holistic để lấy keypoint, sau đó đưa vào một temporal model để dịch sang câu tiếng Việt có ngữ pháp đúng. Có thể thêm TTS nếu còn thời gian.",
-        hardLabel: "Khó",
+          "Stream webcam đi qua một mô hình trích keypoint cơ thể, sau đó đưa vào một temporal model để dịch sang câu tiếng Việt có ngữ pháp đúng. Có thể thêm TTS nếu còn thời gian.",
         constraints: [
           "Streaming thay vì batch: dùng sliding window có overlap và beam search decoder. Định nghĩa rõ khi nào câu kết thúc.",
-          "Latency dưới 500 ms ở P95 từ kết thúc gesture đến hiển thị câu dịch.",
+          "Latency dưới 500 ms ở P95 từ kết thúc cử chỉ đến hiển thị câu dịch.",
           "Khi confidence dưới ngưỡng, hiển thị top-3 ứng viên cho user xác nhận.",
           "Dataset tự thu tối thiểu 100 câu của 2 người ký, kèm augment và annotation guideline.",
         ],
@@ -193,8 +185,7 @@ export const groups = [
       {
         title: "Multi-user Gesture Collaborative 3D Workspace",
         description:
-          "Nhiều user mỗi người 1 webcam cùng vào 1 phòng, dùng gesture xoay, scale, di chuyển hoặc vẽ trên đối tượng 3D chung trong browser. Không truyền video, chỉ truyền pose keypoint giữa các client qua WebRTC DataChannel.",
-        hardLabel: "Khó",
+          "Nhiều user mỗi người 1 webcam cùng vào 1 phòng, dùng cử chỉ xoay, scale, di chuyển hoặc vẽ trên đối tượng 3D chung trong browser. Không truyền video, chỉ truyền pose keypoint giữa các client qua WebRTC DataChannel.",
         constraints: [
           "Conflict resolution khi 2 user cùng grab 1 object: chọn CRDT hoặc OT, mô tả lý do và ví dụ minh hoạ.",
           "Gesture FSM mỗi tay có các state idle, tracking, engaged-pinch, drag, release, kèm state diagram và debounce time.",
@@ -205,8 +196,7 @@ export const groups = [
       {
         title: "Adaptive Gesture Authentication",
         description:
-          "User đăng ký gesture passphrase cá nhân là chuỗi 3 đến 5 gesture trong không gian 3D. Model học pattern theo người. Mỗi lần đăng nhập: kiểm tra liveness, so với template trong DB; nếu drift nhẹ thì cập nhật template.",
-        hardLabel: "Khó",
+          "User đăng ký gesture passphrase là chuỗi 3 đến 5 cử chỉ trong không gian 3D. Model học pattern theo người. Mỗi lần đăng nhập: kiểm tra liveness, so với template trong DB và cập nhật template khi có drift nhẹ.",
         constraints: [
           "Threat model rõ ràng với tối thiểu 4 kịch bản tấn công, mỗi kịch bản đi kèm biện pháp giảm thiểu.",
           "Fallback khi auth fail 3 lần liên tiếp: lock tài khoản, gửi cảnh báo và mở fallback qua OTP.",
@@ -220,18 +210,16 @@ export const groups = [
     id: "nhom-4",
     number: 4,
     name: "Fashion Visual Search Engine",
-    codename: "image_retrieval — VOGUE FIND",
     tone: "teal",
-    repo: "https://github.com/HIT-PYTHON-2026/image_retrieval",
     summary:
-      "ResNet50 sinh embedding 2048-dim và lưu vào Milvus, dùng PostgreSQL và MinIO. Frontend React, đã có e-commerce features như cart, brand dashboard và RBAC.",
+      "Hệ thống tìm sản phẩm thời trang bằng ảnh: sinh embedding cho ảnh và lưu vào vector database, có e-commerce features như giỏ hàng, brand dashboard và phân quyền.",
     features: [
       {
-        title: "Hybrid Text + Image Search bằng CLIP",
+        title: "Hybrid Text + Image Search bằng mô hình đa modal",
         description:
-          "Cho phép user kết hợp ảnh và text trong cùng 1 query. Swap ResNet50 sang CLIP, reindex Milvus với embedding mới. Hỗ trợ weighting giữa image và text, hỗ trợ negation chuyển sang filter SQL.",
+          "Cho phép user kết hợp ảnh và text trong cùng 1 query. Swap mô hình embedding sang một mô hình đa modal, reindex toàn bộ vector database. Hỗ trợ weighting giữa image và text, hỗ trợ negation chuyển sang filter SQL.",
         constraints: [
-          "Migration: đổi model là đổi vector space, phải tạo collection Milvus mới song song và có feature flag để A/B test trước khi cắt sang.",
+          "Migration: đổi model là đổi vector space, phải tạo collection mới song song và có feature flag để A/B test trước khi cắt sang.",
           "Re-ranking pass 2 với cross-encoder: từ top-100 chọn lại top-10.",
           "Latency search end-to-end dưới 500 ms ở P95 kể cả khi có rerank.",
           "Evaluation Recall@10 và MRR trên tập đánh giá tối thiểu 100 query có ground-truth tự build.",
@@ -264,11 +252,11 @@ export const groups = [
 ];
 
 export const timeline = [
-  { week: "1", goal: "Design doc", deliverable: "DESIGN.md cho mỗi tính năng, sơ đồ Excalidraw và threat model" },
-  { week: "2", goal: "Setup CI cơ bản và repo skeleton", deliverable: "Lint và unit test pass trên GitHub Actions hoặc Jenkins" },
+  { week: "1", goal: "Design doc", deliverable: "DESIGN.md cho mỗi tính năng, sơ đồ và threat model" },
+  { week: "2", goal: "Setup CI cơ bản và repo skeleton", deliverable: "Lint và unit test pass trên hệ thống CI đã chọn" },
   { week: "3–4", goal: "Implement 3 tính năng", deliverable: "Code và unit test, mỗi feature 1 PR" },
   { week: "5", goal: "CI/CD hoàn chỉnh và deploy staging", deliverable: "Pipeline đầy đủ stage, deploy thành công lên staging" },
-  { week: "6", goal: "Deploy prod và demo", deliverable: "Live demo, báo cáo và retro" },
+  { week: "6", goal: "Deploy prod và demo", deliverable: "Live demo, báo cáo và retrospective" },
 ];
 
 export const folderStructure = `/docs
@@ -292,7 +280,7 @@ export const grading = [
   { item: "CI/CD pipeline đủ stage, có manual gate và rollback chứng minh được", weight: "25%", criteria: "Demo deploy thành công lên cloud được cấp và rollback trong vài phút" },
   { item: "3 tính năng mới hoạt động đúng spec", weight: "45%", criteria: "Có test, có demo và đáp ứng ràng buộc thiết kế" },
   { item: "Chất lượng thiết kế: design doc, threat model, sơ đồ, schema", weight: "15%", criteria: "Design doc đủ chi tiết, có alternatives kèm lý do chọn" },
-  { item: "Báo cáo và demo live", weight: "10%", criteria: "Slide ngắn cộng demo 15 phút, trả lời được Q&A về bottleneck" },
+  { item: "Báo cáo và demo", weight: "10%", criteria: "Slide ngắn cộng demo 15 phút, trả lời được Q&A về bottleneck" },
   { item: "Vận hành sạch: cost, tag, tự stop EC2, không leak secret", weight: "5%", criteria: "Không có secret trong git history, EC2 ngoài giờ đã stop" },
 ];
 
@@ -304,16 +292,12 @@ export const bonusItems = [
 
 export const generalNotes = [
   {
-    label: "Khó nhưng có lý do",
-    text: "Mọi ràng buộc về latency, throughput và privacy đều mô phỏng tình huống production. Nếu thấy ràng buộc nào không khả thi, hãy đề xuất relax trong design doc và bảo vệ.",
+    label: "Mô phỏng production",
+    text: "Mọi ràng buộc về latency, throughput và privacy mô phỏng tình huống production. Nếu thấy ràng buộc nào không khả thi, đề xuất relax trong design doc và bảo vệ lựa chọn.",
   },
   {
-    label: "Đừng giấu rủi ro",
-    text: "Nếu một tính năng có giả định mạnh, hãy ghi rõ trong README. Giảng viên đánh giá cao sự thành thật về giới hạn.",
-  },
-  {
-    label: "Hỏi sớm, hỏi nhiều",
-    text: "Mỗi tuần có 1 slot 30 phút Q&A với giảng viên. Nhóm nào không tận dụng sẽ bị đánh giá thấp về kỷ luật làm việc.",
+    label: "Nêu rõ giả định",
+    text: "Nếu một tính năng có giả định mạnh, ghi rõ trong README. Sự thành thật về giới hạn được đánh giá cao trong phần thiết kế.",
   },
 ];
 

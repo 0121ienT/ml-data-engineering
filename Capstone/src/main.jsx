@@ -1,14 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  AlertTriangle,
   Award,
   Box,
   CheckCircle2,
   Cloud,
   Compass,
-  ExternalLink,
-  FileCode2,
   Flag,
   Gauge,
   Layers,
@@ -164,37 +161,15 @@ function CloudSection() {
 function GroupBlock({ group }) {
   return (
     <section className="block groupBlock" id={group.id} data-tone={group.tone}>
-      <Eyebrow
-        kicker={`Nhóm ${group.number} · ${group.codename}`}
-        title={group.name}
-      />
-      {group.repo ? (
-        <a className="repoLink" href={group.repo} target="_blank" rel="noreferrer">
-          <FileCode2 aria-hidden="true" />
-          <span>{group.repo.replace("https://", "")}</span>
-          <ExternalLink aria-hidden="true" />
-        </a>
-      ) : (
-        <div className="repoLink missing">
-          <AlertTriangle aria-hidden="true" />
-          <span>Chưa có repo — bắt đầu từ Day 0, chấm khắt khe hơn về design doc.</span>
-        </div>
-      )}
+      <Eyebrow kicker={`Đề tài · Nhóm ${group.number}`} title={group.name} />
       <p className="lead">
-        <strong>Hiện trạng:</strong> {group.summary}
+        <strong>Bối cảnh:</strong> {group.summary}
       </p>
-      {group.note ? (
-        <aside className="callout warn">
-          <AlertTriangle aria-hidden="true" />
-          <p>{group.note}</p>
-        </aside>
-      ) : null}
       <div className="featureStack">
         {group.features.map((feature, index) => (
           <article className="featureCard" key={feature.title}>
             <div className="featureHeader">
               <span className="featureIndex">Tính năng {index + 1}</span>
-              {feature.hardLabel ? <span className="hardBadge">{feature.hardLabel}</span> : null}
             </div>
             <h3>{feature.title}</h3>
             <p>{feature.description}</p>
@@ -325,8 +300,8 @@ function Sidebar({ activeId, onSelect }) {
       <div className="brand">
         <Sparkles aria-hidden="true" />
         <div>
-          <strong>HIT-PYTHON-2026</strong>
-          <span>Bài tập lớn</span>
+          <strong>Bài Tập</strong>
+          <span>CI/CD Auto Deploy</span>
         </div>
       </div>
       <ul>
@@ -399,16 +374,16 @@ function App() {
       <Sidebar activeId={activeId} onSelect={handleSelect} />
       <main className="content">
         <header className="pageHeader">
-          <span className="pageEyebrow">Khóa học · CI/CD + Docker cho ML/Data</span>
+          <span className="pageEyebrow">CI/CD + Docker cho ML/Data</span>
           <h1>Bài Tập - CI/CD Auto Deploy</h1>
           <p>
-            Trang dành cho 4 nhóm đề tài HIT-PYTHON-2026. Mỗi nhóm thực hiện 3 tính năng mới trên repo hiện tại và thiết kế
-            CI/CD pipeline tự động deploy lên cloud được cung cấp.
+            Đề bài gồm 4 đề tài. Mỗi nhóm chọn 1 đề tài, bổ sung 3 tính năng mới và thiết kế CI/CD pipeline tự động deploy
+            lên cloud được cấp.
           </p>
         </header>
         {sections.map((section) => renderSection(section))}
         <footer className="pageFooter">
-          <span>HIT-PYTHON-2026 · ml-data-engineering · Bài tập lớn cuối kỳ</span>
+          <span>Bài Tập · CI/CD Auto Deploy</span>
         </footer>
       </main>
     </div>
