@@ -1,9 +1,7 @@
 export const meta = {
-  title: "Đề bài: Mở rộng tính năng & CI/CD Auto-Deploy",
+  title: "Mở rộng tính năng & CI/CD Auto-Deploy",
   intro:
     "Có 4 đề tài để chọn. Mỗi nhóm chọn 1 đề tài, bổ sung 3 tính năng mới và thiết kế CI/CD pipeline tự động deploy lên cloud được cấp.",
-  emphasis:
-    "Đánh giá tập trung vào năng lực thiết kế. Giả định, ràng buộc, latency budget và phương án rollback phải được nêu rõ trước khi viết code.",
 };
 
 export const pipelineStages = [

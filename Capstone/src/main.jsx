@@ -69,10 +69,6 @@ function Overview() {
     <section className="block" id="tong-quan">
       <Eyebrow kicker="Tổng quan · Bối cảnh" title={meta.title} />
       <p className="lead">{meta.intro}</p>
-      <aside className="callout">
-        <Sparkles aria-hidden="true" />
-        <p>{meta.emphasis}</p>
-      </aside>
       <div className="overviewGrid">
         <article>
           <Target aria-hidden="true" />
@@ -82,7 +78,7 @@ function Overview() {
         <article>
           <Layers aria-hidden="true" />
           <h3>4 đề tài</h3>
-          <p>Phân loại cảm xúc, biển số xe / parking, hand gesture (chưa có repo) và fashion visual search.</p>
+          <p>Phân loại cảm xúc, biển số xe và parking, hand gesture, và fashion visual search.</p>
         </article>
         <article>
           <Gauge aria-hidden="true" />
@@ -300,7 +296,7 @@ function Sidebar({ activeId, onSelect }) {
       <div className="brand">
         <Sparkles aria-hidden="true" />
         <div>
-          <strong>Bài Tập</strong>
+          <strong>Bài Tập Về Nhà</strong>
           <span>CI/CD Auto Deploy</span>
         </div>
       </div>
@@ -375,7 +371,7 @@ function App() {
       <main className="content">
         <header className="pageHeader">
           <span className="pageEyebrow">CI/CD + Docker cho ML/Data</span>
-          <h1>Bài Tập - CI/CD Auto Deploy</h1>
+          <h1>Bài Tập Về Nhà - CI/CD Auto Deploy</h1>
           <p>
             Đề bài gồm 4 đề tài. Mỗi nhóm chọn 1 đề tài, bổ sung 3 tính năng mới và thiết kế CI/CD pipeline tự động deploy
             lên cloud được cấp.
@@ -383,7 +379,7 @@ function App() {
         </header>
         {sections.map((section) => renderSection(section))}
         <footer className="pageFooter">
-          <span>Bài Tập · CI/CD Auto Deploy</span>
+          <span>Bài Tập Về Nhà · CI/CD Auto Deploy</span>
         </footer>
       </main>
     </div>
