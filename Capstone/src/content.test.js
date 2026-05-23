@@ -4,14 +4,11 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {
-  bonusItems,
   cloudResources,
   deliverables,
-  grading,
   groups,
   pipelineStages,
   sections,
-  timeline,
 } from "./content.js";
 
 test("exercise site lists all four HIT-PYTHON-2026 capstone groups", () => {
@@ -59,23 +56,16 @@ test("ci/cd pipeline covers the required ten stages", () => {
   }
 });
 
-test("cloud, grading and timeline metadata are populated", () => {
+test("cloud and deliverables metadata are populated", () => {
   assert.ok(cloudResources.length >= 5);
   assert.ok(deliverables.length >= 3);
-  assert.ok(timeline.length === 5);
-  assert.ok(grading.length >= 4);
-  assert.ok(bonusItems.length >= 3);
-
-  const weights = grading.map((row) => parseInt(row.weight, 10));
-  const totalWeight = weights.reduce((sum, value) => sum + value, 0);
-  assert.equal(totalWeight, 100, "grading rubric must sum to 100%");
 });
 
-test("sidebar sections include ci/cd, cloud, every group, and submission", () => {
+test("sidebar sections include ci/cd, cloud, and every group", () => {
   const kinds = sections.map((section) => section.kind);
   assert.ok(kinds.includes("cicd"));
   assert.ok(kinds.includes("cloud"));
-  assert.ok(kinds.includes("submission"));
+  assert.ok(!kinds.includes("submission"), "submission section should be removed");
 
   const groupSections = sections.filter((section) => section.kind === "group");
   assert.equal(groupSections.length, groups.length);

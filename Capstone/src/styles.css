@@ -510,12 +510,6 @@ svg {
   border-radius: 999px;
 }
 
-.weightCell {
-  color: var(--accent) !important;
-  font-weight: 820 !important;
-  letter-spacing: 0.02em;
-}
-
 /* ---------------- Check list & resource grid ---------------- */
 
 .checkList {
@@ -782,109 +776,6 @@ svg {
   font-weight: 700;
 }
 
-/* ---------------- Submission section ---------------- */
-
-.submissionGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.2rem, 2.4vw, 2.4rem);
-  align-items: start;
-}
-
-.submissionGrid > div {
-  min-width: 0;
-}
-
-.submissionGrid .subHeading:first-child {
-  margin-top: 0;
-}
-
-.folderTree {
-  background: #f1efe9;
-  border: 1px solid var(--hairline);
-  border-radius: 10px;
-  padding: 1rem 1.2rem;
-  overflow-x: auto;
-  font-size: clamp(0.78rem, 0.88vw, 0.88rem);
-  color: #1f2937;
-  margin: 0 0 0.8rem;
-  line-height: 1.6;
-  font-weight: 540;
-}
-
-.footnote {
-  margin: 0 0 1.4rem;
-  color: var(--muted);
-  font-size: clamp(0.82rem, 0.9vw, 0.92rem);
-  font-weight: 540;
-}
-
-.bonusBlock {
-  margin: 1.2rem 0 1.4rem;
-  padding: 1rem 1.2rem;
-  border-top: 2px solid var(--teal);
-  background: rgba(15, 118, 110, 0.05);
-}
-
-.bonusBlock h4 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.6rem;
-  color: var(--teal);
-  font-size: 0.72rem;
-  font-weight: 880;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.bonusBlock h4 svg {
-  width: 14px;
-  height: 14px;
-}
-
-.bonusBlock ul {
-  margin: 0;
-  padding-left: 1.1rem;
-  display: grid;
-  gap: 0.45rem;
-  color: var(--ink);
-  font-size: clamp(0.85rem, 0.96vw, 0.96rem);
-  font-weight: 540;
-  line-height: 1.5;
-}
-
-.bonusBlock ul li::marker {
-  color: var(--teal);
-}
-
-.noteStack {
-  display: grid;
-  gap: 0.7rem;
-}
-
-.noteStack article {
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--hairline);
-}
-
-.noteStack span {
-  display: block;
-  font-size: 0.66rem;
-  font-weight: 880;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.4rem;
-}
-
-.noteStack p {
-  margin: 0;
-  color: var(--muted);
-  font-size: clamp(0.88rem, 1vw, 1rem);
-  line-height: 1.55;
-}
-
 .pageFooter {
   display: flex;
   justify-content: center;
@@ -938,10 +829,6 @@ svg {
 }
 
 @media (max-width: 960px) {
-  .submissionGrid {
-    grid-template-columns: 1fr;
-  }
-
   .featureNav {
     grid-template-columns: 1fr;
   }

@@ -247,56 +247,6 @@ export const groups = [
   },
 ];
 
-export const timeline = [
-  { week: "1", goal: "Design doc", deliverable: "DESIGN.md cho mỗi tính năng, sơ đồ và threat model" },
-  { week: "2", goal: "Setup CI cơ bản và repo skeleton", deliverable: "Lint và unit test pass trên hệ thống CI đã chọn" },
-  { week: "3–4", goal: "Implement 3 tính năng", deliverable: "Code và unit test, mỗi feature 1 PR" },
-  { week: "5", goal: "CI/CD hoàn chỉnh và deploy staging", deliverable: "Pipeline đầy đủ stage, deploy thành công lên staging" },
-  { week: "6", goal: "Deploy prod và demo", deliverable: "Live demo, báo cáo và retrospective" },
-];
-
-export const folderStructure = `/docs
-  DESIGN.md
-  THREAT-MODEL.md
-  ROLLBACK.md
-  pipeline-diagram.png
-/ci
-  .github/workflows/  hoặc Jenkinsfile
-/src
-  ...
-/scripts
-  bootstrap-ec2.sh
-  rollback.sh
-/tests
-  unit/
-  integration/
-README.md`;
-
-export const grading = [
-  { item: "CI/CD pipeline đủ stage, có manual gate và rollback chứng minh được", weight: "25%", criteria: "Demo deploy thành công lên cloud được cấp và rollback trong vài phút" },
-  { item: "3 tính năng mới hoạt động đúng spec", weight: "45%", criteria: "Có test, có demo và đáp ứng ràng buộc thiết kế" },
-  { item: "Chất lượng thiết kế: design doc, threat model, sơ đồ, schema", weight: "15%", criteria: "Design doc đủ chi tiết, có alternatives kèm lý do chọn" },
-  { item: "Báo cáo và demo", weight: "10%", criteria: "Slide ngắn cộng demo 15 phút, trả lời được Q&A về bottleneck" },
-  { item: "Vận hành sạch: cost, tag, tự stop EC2, không leak secret", weight: "5%", criteria: "Không có secret trong git history, EC2 ngoài giờ đã stop" },
-];
-
-export const bonusItems = [
-  "Triển khai infra-as-code bằng Terraform hoặc CloudFormation thay vì click console.",
-  "Có observability stack tự host với Prometheus và Grafana, dashboard live.",
-  "Có chaos test: kill 1 service ngẫu nhiên trong demo, hệ thống vẫn lên.",
-];
-
-export const generalNotes = [
-  {
-    label: "Mô phỏng production",
-    text: "Mọi ràng buộc về latency, throughput và privacy mô phỏng tình huống production. Nếu thấy ràng buộc nào không khả thi, đề xuất relax trong design doc và bảo vệ lựa chọn.",
-  },
-  {
-    label: "Nêu rõ giả định",
-    text: "Nếu một tính năng có giả định mạnh, ghi rõ trong README. Sự thành thật về giới hạn được đánh giá cao trong phần thiết kế.",
-  },
-];
-
 export const sections = [
   { id: "ci-cd", label: "CI/CD chung", kind: "cicd" },
   { id: "cloud", label: "Cloud được cấp", kind: "cloud" },
@@ -306,5 +256,4 @@ export const sections = [
     kind: "group",
     groupId: group.id,
   })),
-  { id: "nop-bai", label: "Nộp bài & chấm", kind: "submission" },
 ];

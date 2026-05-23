@@ -1,16 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  Award,
-  Box,
   CheckCircle2,
   Cloud,
   Compass,
-  Flag,
-  ListChecks,
   Lock,
   PackageOpen,
-  Rocket,
   Server,
   ShieldAlert,
   Sparkles,
@@ -19,17 +14,12 @@ import {
 } from "lucide-react";
 
 import {
-  bonusItems,
   cloudNote,
   cloudResources,
   deliverables,
-  folderStructure,
-  generalNotes,
-  grading,
   groups,
   pipelineStages,
   sections,
-  timeline,
 } from "./content.js";
 import "./styles.css";
 
@@ -37,7 +27,6 @@ const sectionIcons = {
   cicd: Workflow,
   cloud: Cloud,
   group: Users,
-  submission: Flag,
 };
 
 function Eyebrow({ kicker, title }) {
@@ -173,109 +162,9 @@ function GroupBlock({ group }) {
   );
 }
 
-function Submission() {
-  return (
-    <section className="block" id="nop-bai">
-      <Eyebrow kicker="Vận hành · Nộp bài" title="Quy trình làm việc, nộp bài & chấm" />
-      <div className="submissionGrid">
-        <div>
-          <h3 className="subHeading">
-            <Rocket aria-hidden="true" />
-            Mốc thời gian (6 tuần)
-          </h3>
-          <div className="tableWrap">
-            <table className="pipelineTable">
-              <thead>
-                <tr>
-                  <th>Tuần</th>
-                  <th>Mục tiêu</th>
-                  <th>Sản phẩm</th>
-                </tr>
-              </thead>
-              <tbody>
-                {timeline.map((row) => (
-                  <tr key={row.week}>
-                    <td>{row.week}</td>
-                    <td>{row.goal}</td>
-                    <td>{row.deliverable}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="subHeading">
-            <Box aria-hidden="true" />
-            Cấu trúc nộp
-          </h3>
-          <pre className="folderTree">
-            <code>{folderStructure}</code>
-          </pre>
-          <p className="footnote">
-            PR cuối cùng mở từ <code>release/v1</code> → <code>main</code>, gắn label <code>[final-submission]</code>.
-          </p>
-        </div>
-      </div>
-
-      <h3 className="subHeading">
-        <Award aria-hidden="true" />
-        Tiêu chí chấm
-      </h3>
-      <div className="tableWrap">
-        <table className="pipelineTable">
-          <thead>
-            <tr>
-              <th>Hạng mục</th>
-              <th>Trọng số</th>
-              <th>Đạt khi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {grading.map((row) => (
-              <tr key={row.item}>
-                <td>{row.item}</td>
-                <td className="weightCell">{row.weight}</td>
-                <td>{row.criteria}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <aside className="bonusBlock">
-        <h4>
-          <Sparkles aria-hidden="true" />
-          Bonus tối đa 10%
-        </h4>
-        <ul>
-          {bonusItems.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </aside>
-
-      <h3 className="subHeading">
-        <ListChecks aria-hidden="true" />
-        Lưu ý chung
-      </h3>
-      <div className="noteStack">
-        {generalNotes.map((note) => (
-          <article key={note.label}>
-            <span>{note.label}</span>
-            <p>{note.text}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function renderSection(section) {
   if (section.kind === "cicd") return <CiCd key={section.id} />;
   if (section.kind === "cloud") return <CloudSection key={section.id} />;
-  if (section.kind === "submission") return <Submission key={section.id} />;
   if (section.kind === "group") {
     const group = groups.find((item) => item.id === section.groupId);
     return group ? <GroupBlock key={group.id} group={group} /> : null;
