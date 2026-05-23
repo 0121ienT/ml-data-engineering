@@ -72,7 +72,7 @@ export const groups = [
     id: "nhom-1",
     number: 1,
     name: "Phân loại cảm xúc",
-    short: "Cảm xúc",
+    short: "Emotion",
     tone: "violet",
     summary:
       "Hệ thống nhận diện cảm xúc từ ảnh và video bằng mô hình phân loại trên khuôn mặt, có backend HTTP và frontend web cho upload ảnh cùng livestream camera.",
@@ -113,7 +113,7 @@ export const groups = [
     id: "nhom-2",
     number: 2,
     name: "Hệ thống nhận diện biển số xe thông minh",
-    short: "Biển số xe",
+    short: "License plate",
     tone: "amber",
     summary:
       "Hệ thống detect xe và slot trống bằng object detection, có dynamic calibration theo độ phân giải camera, backend HTTP và dashboard hiển thị trạng thái bãi.",
@@ -154,7 +154,7 @@ export const groups = [
     id: "nhom-3",
     number: 3,
     name: "Hand Gesture",
-    short: "Cử chỉ tay",
+    short: "Hand gesture",
     tone: "crimson",
     summary:
       "Hệ thống nhận diện và sử dụng cử chỉ tay từ webcam. Đề tài này không có codebase nền sẵn nên cần đầu tư nhiều hơn cho phần thiết kế trước khi triển khai.",
@@ -235,7 +235,7 @@ export const groups = [
 ];
 
 export const sections = [
-  { id: "ci-cd", label: "CI/CD chung", kind: "cicd" },
+  { id: "ci-cd", label: "CI/CD", kind: "cicd" },
   ...groups.map((group) => ({
     id: group.id,
     label: `${group.number}. ${group.short ?? group.name}`,
