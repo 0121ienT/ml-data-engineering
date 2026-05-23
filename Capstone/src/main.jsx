@@ -2,20 +2,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   CheckCircle2,
-  Cloud,
   Compass,
   Lock,
   PackageOpen,
-  Server,
-  ShieldAlert,
   Sparkles,
   Users,
   Workflow,
 } from "lucide-react";
 
 import {
-  cloudNote,
-  cloudResources,
   deliverables,
   groups,
   pipelineStages,
@@ -25,7 +20,6 @@ import "./styles.css";
 
 const sectionIcons = {
   cicd: Workflow,
-  cloud: Cloud,
   group: Users,
 };
 
@@ -103,26 +97,6 @@ function CiCd() {
   );
 }
 
-function CloudSection() {
-  return (
-    <section className="block" id="cloud">
-      <Eyebrow kicker="Hạ tầng · Tài nguyên" title="Cloud được cung cấp" />
-      <div className="resourceGrid">
-        {cloudResources.map((item) => (
-          <article key={item}>
-            <Server aria-hidden="true" />
-            <p>{item}</p>
-          </article>
-        ))}
-      </div>
-      <aside className="callout subtle">
-        <ShieldAlert aria-hidden="true" />
-        <p>{cloudNote}</p>
-      </aside>
-    </section>
-  );
-}
-
 function GroupBlock({ group }) {
   return (
     <section className="block groupBlock" id={group.id} data-tone={group.tone}>
@@ -164,7 +138,6 @@ function GroupBlock({ group }) {
 
 function renderSection(section) {
   if (section.kind === "cicd") return <CiCd key={section.id} />;
-  if (section.kind === "cloud") return <CloudSection key={section.id} />;
   if (section.kind === "group") {
     const group = groups.find((item) => item.id === section.groupId);
     return group ? <GroupBlock key={group.id} group={group} /> : null;

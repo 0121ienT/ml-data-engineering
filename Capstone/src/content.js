@@ -67,19 +67,6 @@ export const deliverables = [
   "File ROLLBACK.md với lệnh cụ thể để rollback về tag cũ trong vài phút.",
 ];
 
-export const cloudResources = [
-  "1 EC2 t3.large cho app prod; đề tài cần GPU đăng ký để được cấp g4dn.xlarge.",
-  "1 EC2 t3.medium làm staging.",
-  "1 ECR private repo cho mỗi nhóm.",
-  "1 S3 bucket cho mỗi nhóm để lưu model, log và backup.",
-  "RDS Postgres db.t3.micro cho đề tài có database.",
-  "ElastiCache Redis cache.t3.micro cho đề tài có cache.",
-  "Domain test gắn vào IP và port của EC2 qua Security Group.",
-];
-
-export const cloudNote =
-  "Tài nguyên gắn tag để theo dõi chi phí. Nhóm phải tự stop EC2 ngoài giờ làm bài và đính kèm script tắt trong phần Notify.";
-
 export const groups = [
   {
     id: "nhom-1",
@@ -249,7 +236,6 @@ export const groups = [
 
 export const sections = [
   { id: "ci-cd", label: "CI/CD chung", kind: "cicd" },
-  { id: "cloud", label: "Cloud được cấp", kind: "cloud" },
   ...groups.map((group) => ({
     id: group.id,
     label: `${group.number}. ${group.short ?? group.name}`,

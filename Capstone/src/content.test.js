@@ -4,7 +4,6 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {
-  cloudResources,
   deliverables,
   groups,
   pipelineStages,
@@ -56,15 +55,14 @@ test("ci/cd pipeline covers the required ten stages", () => {
   }
 });
 
-test("cloud and deliverables metadata are populated", () => {
-  assert.ok(cloudResources.length >= 5);
+test("deliverables metadata is populated", () => {
   assert.ok(deliverables.length >= 3);
 });
 
-test("sidebar sections include ci/cd, cloud, and every group", () => {
+test("sidebar sections include ci/cd and every group, without cloud or submission", () => {
   const kinds = sections.map((section) => section.kind);
   assert.ok(kinds.includes("cicd"));
-  assert.ok(kinds.includes("cloud"));
+  assert.ok(!kinds.includes("cloud"), "cloud section should be removed");
   assert.ok(!kinds.includes("submission"), "submission section should be removed");
 
   const groupSections = sections.filter((section) => section.kind === "group");
