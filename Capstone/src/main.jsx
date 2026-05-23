@@ -71,19 +71,30 @@ function CiCd() {
         <table className="pipelineTable">
           <thead>
             <tr>
+              <th>#</th>
               <th>Stage</th>
               <th>Yêu cầu</th>
               <th>Fail-fast khi</th>
             </tr>
           </thead>
           <tbody>
-            {pipelineStages.map((row) => (
-              <tr key={row.stage}>
-                <td>{row.stage}</td>
-                <td>{row.requirement}</td>
-                <td>{row.failFast}</td>
-              </tr>
-            ))}
+            {pipelineStages.map((row, index) => {
+              const previousPhase = index > 0 ? pipelineStages[index - 1].phase : null;
+              const isPhaseStart = row.phase !== previousPhase;
+              return (
+                <tr key={row.stage} className={isPhaseStart ? "phaseStart" : undefined}>
+                  <td className="stepCell">{String(index + 1).padStart(2, "0")}</td>
+                  <td>
+                    <div className="stageCell">
+                      <span className="stageName">{row.stage}</span>
+                      {isPhaseStart ? <span className="phaseTag">{row.phase}</span> : null}
+                    </div>
+                  </td>
+                  <td>{row.requirement}</td>
+                  <td>{row.failFast}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -130,9 +141,17 @@ function GroupBlock({ group }) {
       <p className="lead">
         <strong>Bối cảnh:</strong> {group.summary}
       </p>
+      <nav className="featureNav" aria-label={`3 tính năng của ${group.name}`}>
+        {group.features.map((feature, index) => (
+          <a key={feature.title} href={`#${group.id}-f${index + 1}`}>
+            <span className="featureNavIndex">{index + 1}</span>
+            <span className="featureNavTitle">{feature.title}</span>
+          </a>
+        ))}
+      </nav>
       <div className="featureStack">
         {group.features.map((feature, index) => (
-          <article className="featureCard" key={feature.title}>
+          <article className="featureCard" id={`${group.id}-f${index + 1}`} key={feature.title}>
             <div className="featureHeader">
               <span className="featureIndex">Tính năng {index + 1}</span>
             </div>
@@ -158,41 +177,47 @@ function Submission() {
   return (
     <section className="block" id="nop-bai">
       <Eyebrow kicker="Vận hành · Nộp bài" title="Quy trình làm việc, nộp bài & chấm" />
-      <h3 className="subHeading">
-        <Rocket aria-hidden="true" />
-        Mốc thời gian (6 tuần)
-      </h3>
-      <div className="tableWrap">
-        <table className="pipelineTable">
-          <thead>
-            <tr>
-              <th>Tuần</th>
-              <th>Mục tiêu</th>
-              <th>Sản phẩm</th>
-            </tr>
-          </thead>
-          <tbody>
-            {timeline.map((row) => (
-              <tr key={row.week}>
-                <td>{row.week}</td>
-                <td>{row.goal}</td>
-                <td>{row.deliverable}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <div className="submissionGrid">
+        <div>
+          <h3 className="subHeading">
+            <Rocket aria-hidden="true" />
+            Mốc thời gian (6 tuần)
+          </h3>
+          <div className="tableWrap">
+            <table className="pipelineTable">
+              <thead>
+                <tr>
+                  <th>Tuần</th>
+                  <th>Mục tiêu</th>
+                  <th>Sản phẩm</th>
+                </tr>
+              </thead>
+              <tbody>
+                {timeline.map((row) => (
+                  <tr key={row.week}>
+                    <td>{row.week}</td>
+                    <td>{row.goal}</td>
+                    <td>{row.deliverable}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-      <h3 className="subHeading">
-        <Box aria-hidden="true" />
-        Cấu trúc nộp
-      </h3>
-      <pre className="folderTree">
-        <code>{folderStructure}</code>
-      </pre>
-      <p className="footnote">
-        PR cuối cùng mở từ <code>release/v1</code> → <code>main</code>, gắn label <code>[final-submission]</code>.
-      </p>
+        <div>
+          <h3 className="subHeading">
+            <Box aria-hidden="true" />
+            Cấu trúc nộp
+          </h3>
+          <pre className="folderTree">
+            <code>{folderStructure}</code>
+          </pre>
+          <p className="footnote">
+            PR cuối cùng mở từ <code>release/v1</code> → <code>main</code>, gắn label <code>[final-submission]</code>.
+          </p>
+        </div>
+      </div>
 
       <h3 className="subHeading">
         <Award aria-hidden="true" />

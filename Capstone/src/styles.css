@@ -78,6 +78,7 @@ svg {
   display: grid;
   grid-template-columns: 256px minmax(0, 1fr);
   min-height: 100vh;
+  min-width: 0;
 }
 
 /* ---------------- Sidebar ---------------- */
@@ -205,11 +206,17 @@ svg {
 
 .content {
   padding: 52px clamp(24px, 5vw, 64px) 72px;
+  width: 100%;
   max-width: 1080px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 36px;
+  min-width: 0;
+}
+
+.content > * {
+  min-width: 0;
 }
 
 .pageHeader {
@@ -463,6 +470,46 @@ svg {
   color: var(--muted);
 }
 
+.pipelineTable tbody tr.phaseStart td {
+  border-top: 1px solid var(--hairline-strong);
+}
+
+.pipelineTable tbody tr.phaseStart:first-child td {
+  border-top: none;
+}
+
+.stepCell {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  color: var(--soft) !important;
+  font-weight: 720;
+  width: 2.2rem;
+  letter-spacing: 0.04em;
+}
+
+.stageCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stageName {
+  color: var(--ink);
+  font-weight: 720;
+}
+
+.phaseTag {
+  align-self: flex-start;
+  font-size: 0.6rem;
+  font-weight: 880;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(15, 118, 110, 0.08);
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+}
+
 .weightCell {
   color: var(--accent) !important;
   font-weight: 820 !important;
@@ -596,6 +643,53 @@ svg {
   color: var(--orange);
 }
 
+/* ---------------- Feature nav (anchor pills) ---------------- */
+
+.featureNav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0 0 1.4rem;
+  padding: 0;
+}
+
+.featureNav a {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--hairline);
+  border-left: 2px solid var(--accent);
+  background: rgba(15, 23, 42, 0.02);
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: clamp(0.78rem, 0.86vw, 0.88rem);
+  font-weight: 580;
+  line-height: 1.35;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.featureNav a:hover {
+  background: rgba(15, 118, 110, 0.05);
+  border-color: var(--accent);
+}
+
+.featureNavIndex {
+  flex-shrink: 0;
+  font-size: 0.66rem;
+  font-weight: 880;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  padding-top: 0.15rem;
+}
+
+.featureNavTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* ---------------- Feature cards ---------------- */
 
 .featureStack {
@@ -608,6 +702,7 @@ svg {
   padding: 1.4rem 1.6rem 1.5rem;
   border-top: 2px solid var(--accent);
   background: rgba(15, 23, 42, 0.02);
+  scroll-margin-top: 24px;
 }
 
 .featureHeader {
@@ -688,6 +783,21 @@ svg {
 }
 
 /* ---------------- Submission section ---------------- */
+
+.submissionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.2rem, 2.4vw, 2.4rem);
+  align-items: start;
+}
+
+.submissionGrid > div {
+  min-width: 0;
+}
+
+.submissionGrid .subHeading:first-child {
+  margin-top: 0;
+}
 
 .folderTree {
   background: #f1efe9;
@@ -791,7 +901,7 @@ svg {
 
 @media (max-width: 960px) {
   .appShell {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .sidebar {
@@ -824,6 +934,16 @@ svg {
 
   .block {
     padding: 30px 22px;
+  }
+}
+
+@media (max-width: 960px) {
+  .submissionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .featureNav {
+    grid-template-columns: 1fr;
   }
 }
 

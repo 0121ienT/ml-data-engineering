@@ -1,57 +1,61 @@
-export const meta = {
-  title: "Mở rộng tính năng & CI/CD Auto-Deploy",
-  intro:
-    "Có 4 đề tài để chọn. Mỗi nhóm chọn 1 đề tài, bổ sung 3 tính năng mới và thiết kế CI/CD pipeline tự động deploy lên cloud được cấp.",
-};
-
 export const pipelineStages = [
   {
     stage: "Lint & format",
+    phase: "Kiểm tra code",
     requirement: "Black hoặc Ruff cho Python, ESLint cho JS/TS",
     failFast: "code không đúng style",
   },
   {
     stage: "Unit test",
+    phase: "Kiểm tra code",
     requirement: "Coverage tối thiểu 60% cho module logic chính",
     failFast: "test fail hoặc coverage tụt",
   },
   {
     stage: "Build image",
+    phase: "Đóng gói",
     requirement: "Multi-stage Dockerfile, image gọn và không chứa secret",
     failFast: "image quá lớn hoặc có secret",
   },
   {
     stage: "Security scan",
+    phase: "Đóng gói",
     requirement: "Quét CVE bằng trivy hoặc grype; chặn nếu có CVE HIGH chưa fix",
     failFast: "có CVE HIGH/CRITICAL",
   },
   {
     stage: "Push registry",
+    phase: "Đóng gói",
     requirement: "Push image lên registry với 2 tag git-sha và latest",
     failFast: "credential sai",
   },
   {
     stage: "Integration test",
+    phase: "Triển khai",
     requirement: "Compose lên DB và cache giả lập, gọi smoke test API thật",
     failFast: "smoke test không 200",
   },
   {
     stage: "Deploy staging",
+    phase: "Triển khai",
     requirement: "Pull image về EC2 staging và khởi động bằng docker compose",
     failFast: "health check fail trong 60s",
   },
   {
     stage: "Manual gate",
+    phase: "Triển khai",
     requirement: "Approval qua GitHub Environment hoặc Jenkins input",
     failFast: "không có ai approve",
   },
   {
     stage: "Deploy prod",
+    phase: "Triển khai",
     requirement: "Rolling update hoặc blue-green, có rollback tự động",
     failFast: "health check prod fail",
   },
   {
     stage: "Notify",
+    phase: "Thông báo",
     requirement: "Gửi message khi deploy xong hoặc fail",
     failFast: "—",
   },
@@ -81,6 +85,7 @@ export const groups = [
     id: "nhom-1",
     number: 1,
     name: "Phân loại cảm xúc",
+    short: "Cảm xúc",
     tone: "violet",
     summary:
       "Hệ thống nhận diện cảm xúc từ ảnh và video bằng mô hình phân loại trên khuôn mặt, có backend HTTP và frontend web cho upload ảnh cùng livestream camera.",
@@ -121,6 +126,7 @@ export const groups = [
     id: "nhom-2",
     number: 2,
     name: "Hệ thống nhận diện biển số xe thông minh",
+    short: "Biển số xe",
     tone: "amber",
     summary:
       "Hệ thống detect xe và slot trống bằng object detection, có dynamic calibration theo độ phân giải camera, backend HTTP và dashboard hiển thị trạng thái bãi.",
@@ -161,6 +167,7 @@ export const groups = [
     id: "nhom-3",
     number: 3,
     name: "Hand Gesture",
+    short: "Cử chỉ tay",
     tone: "crimson",
     summary:
       "Hệ thống nhận diện và sử dụng cử chỉ tay từ webcam. Đề tài này không có codebase nền sẵn nên cần đầu tư nhiều hơn cho phần thiết kế trước khi triển khai.",
@@ -201,6 +208,7 @@ export const groups = [
     id: "nhom-4",
     number: 4,
     name: "Fashion Visual Search Engine",
+    short: "Fashion search",
     tone: "teal",
     summary:
       "Hệ thống tìm sản phẩm thời trang bằng ảnh: sinh embedding cho ảnh và lưu vào vector database, có e-commerce features như giỏ hàng, brand dashboard và phân quyền.",
@@ -292,6 +300,11 @@ export const generalNotes = [
 export const sections = [
   { id: "ci-cd", label: "CI/CD chung", kind: "cicd" },
   { id: "cloud", label: "Cloud được cấp", kind: "cloud" },
-  ...groups.map((group) => ({ id: group.id, label: `Nhóm ${group.number}`, kind: "group", groupId: group.id })),
+  ...groups.map((group) => ({
+    id: group.id,
+    label: `${group.number}. ${group.short ?? group.name}`,
+    kind: "group",
+    groupId: group.id,
+  })),
   { id: "nop-bai", label: "Nộp bài & chấm", kind: "submission" },
 ];
