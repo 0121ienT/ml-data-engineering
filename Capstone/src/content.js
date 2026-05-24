@@ -62,7 +62,7 @@ export const pipelineStages = [
     stage: "Deploy staging",
     phase: "Deployment",
     requirement: [
-      "SSH vào EC2 staging, pull image mới từ registry.",
+      "SSH vào server, pull image mới từ registry.",
       "Chạy 'docker compose up -d' để khởi động.",
       "Mở URL staging trong browser, thấy app hiển thị bình thường là pass.",
     ],
@@ -73,7 +73,7 @@ export const pipelineStages = [
     phase: "Deployment",
     requirement: [
       "Pipeline tạm dừng và chờ duyệt qua GitHub Environment (Required reviewers).",
-      "Tối thiểu 1 reviewer khác người commit bấm duyệt thì pipeline mới chạy tiếp.",
+      "Người commit có thể tự duyệt; chỉ cần có 1 lượt duyệt là pipeline chạy tiếp.",
     ],
     failFast: "không có ai bấm duyệt",
   },
@@ -81,7 +81,7 @@ export const pipelineStages = [
     stage: "Deploy prod",
     phase: "Deployment",
     requirement: [
-      "SSH vào EC2 prod, pull image rồi chạy 'docker compose up -d'.",
+      "SSH vào server, pull image rồi chạy 'docker compose up -d'.",
       "Có script 'rollback.sh' đổi tag image về bản trước rồi 'docker compose up -d' lại.",
       "Gọi 1 endpoint sau khi up xong để xác nhận app chạy bình thường.",
     ],
