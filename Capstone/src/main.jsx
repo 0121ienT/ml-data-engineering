@@ -115,7 +115,7 @@ function GroupBlock({ group }) {
     <section className="block groupBlock" id={group.id} data-tone={group.tone}>
       <Eyebrow kicker={`Đề tài · Nhóm ${group.number}`} title={group.name} />
       <p className="lead">
-        <strong>Bối cảnh:</strong> {group.summary}
+        <strong>Mô tả:</strong> {group.summary}
       </p>
       <div className="assigneeRow">
         <span className="assigneeLabel">
