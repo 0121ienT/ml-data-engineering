@@ -89,7 +89,7 @@ export const pipelineStages = [
 ];
 
 export const deliverables = [
-  "Sơ đồ pipeline chỉ rõ stage, artifact đi qua từng bước và nơi lưu secret.",
+  "Sơ đồ pipeline chỉ rõ stage và nơi lưu secret.",
   "File THREAT-MODEL.md ngắn với tối thiểu 3 mối đe doạ chính và biện pháp giảm thiểu.",
   "File ROLLBACK.md với lệnh cụ thể để rollback về tag cũ trong vài phút.",
 ];
