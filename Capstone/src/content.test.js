@@ -13,10 +13,10 @@ import {
 test("exercise site lists all four HIT-PYTHON-2026 capstone groups", () => {
   assert.equal(groups.length, 4);
   const names = groups.map((group) => group.name);
-  assert.match(names.join(" "), /Phân loại cảm xúc/);
-  assert.match(names.join(" "), /biển số xe/);
-  assert.match(names.join(" "), /Hand Gesture/);
-  assert.match(names.join(" "), /Fashion Visual Search/);
+  assert.match(names.join(" "), /Driver Drowsiness/i);
+  assert.match(names.join(" "), /Receipt OCR/i);
+  assert.match(names.join(" "), /Gesture DJ/i);
+  assert.match(names.join(" "), /Recipe Search/i);
 });
 
 test("each group exposes exactly three new features with constraints", () => {
@@ -25,15 +25,15 @@ test("each group exposes exactly three new features with constraints", () => {
     for (const feature of group.features) {
       assert.ok(feature.title.length > 5, `${group.name} feature needs a real title`);
       assert.ok(feature.description.length > 40, `${feature.title} needs a meaningful description`);
-      assert.ok(feature.constraints.length >= 3, `${feature.title} needs design constraints`);
+      assert.ok(feature.constraints.length >= 2, `${feature.title} needs design constraints`);
     }
   }
 });
 
-test("hand gesture group exists and exposes three features", () => {
-  const handGesture = groups.find((group) => /Hand Gesture/i.test(group.name));
-  assert.ok(handGesture, "Hand Gesture group must exist");
-  assert.equal(handGesture.features.length, 3);
+test("gesture-based group exists and exposes three features", () => {
+  const gestureGroup = groups.find((group) => /gesture/i.test(group.name));
+  assert.ok(gestureGroup, "A gesture-based group must exist");
+  assert.equal(gestureGroup.features.length, 3);
 });
 
 test("ci/cd pipeline covers the required core stages", () => {

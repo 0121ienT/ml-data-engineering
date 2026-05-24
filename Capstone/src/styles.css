@@ -401,27 +401,9 @@ svg {
   letter-spacing: 0.04em;
 }
 
-.stageCell {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
 .stageName {
   color: var(--ink);
   font-weight: 720;
-}
-
-.phaseTag {
-  align-self: flex-start;
-  font-size: 0.6rem;
-  font-weight: 880;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: rgba(15, 118, 110, 0.08);
-  padding: 0.18rem 0.55rem;
-  border-radius: 999px;
 }
 
 .requirementList {

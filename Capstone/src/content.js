@@ -4,10 +4,10 @@ export const pipelineStages = [
     phase: "Code check",
     requirement: [
       "Tìm hiểu các lint framework để kiểm tra format trước khi setup CI.",
-      "Python: dùng Ruff, chạy lệnh 'ruff format --check .' và 'ruff check .' trong CI.",
-      "JavaScript / TypeScript: dùng Prettier, chạy lệnh 'prettier --check .' trong CI.",
+      "Python: dùng Ruff.",
+      "JavaScript / TypeScript: dùng Prettier.",
     ],
-    failFast: "lệnh check báo còn file chưa format",
+    failFast: "format code bị lỗi",
   },
   {
     stage: "Unit test",
@@ -24,7 +24,7 @@ export const pipelineStages = [
     phase: "Packaging",
     requirement: [
       "Build image bằng Dockerfile đặt ở root repo.",
-      "Đặt tên image rõ ràng theo dạng <tên-app>:<tag> (ví dụ 'emotion-api:latest').",
+      "Đặt tên image rõ ràng theo dạng <tên-app>:<tag>.",
       "Không copy file .env hoặc password vào image.",
     ],
     failFast: "lệnh docker build báo lỗi",
@@ -33,7 +33,7 @@ export const pipelineStages = [
     stage: "Security scan",
     phase: "Packaging",
     requirement: [
-      "Dùng Trivy, chạy lệnh 'trivy image <tên-image>' và in output ra log CI.",
+      "Dùng Trivy quét image và in output ra log CI.",
       "Chỉ dừng pipeline khi có CVE mức CRITICAL; HIGH chỉ cảnh báo.",
     ],
     failFast: "có CVE CRITICAL",
@@ -43,8 +43,7 @@ export const pipelineStages = [
     phase: "Packaging",
     requirement: [
       "Push image lên Docker Hub.",
-      "Dùng tag 'latest' là đủ; ai muốn thêm tag git-sha thì làm bonus.",
-      "Đăng nhập bằng secret lấy từ CI, không ghi cứng username và password trong code.",
+      "Đăng nhập bằng secret lấy từ CI, không hard code username và password.",
     ],
     failFast: "đăng nhập hoặc push không thành công",
   },
@@ -54,7 +53,7 @@ export const pipelineStages = [
     requirement: [
       "Dùng docker compose để chạy app cùng database và cache giả lập.",
       "Gọi 1-2 endpoint chính bằng curl, kiểm tra trả về status 200.",
-      "Chạy 'docker compose down' để dọn container sau khi xong.",
+      "Dọn container sau khi test xong.",
     ],
     failFast: "endpoint không trả status 200",
   },
@@ -63,7 +62,7 @@ export const pipelineStages = [
     phase: "Deployment",
     requirement: [
       "SSH vào server, pull image mới từ registry.",
-      "Chạy 'docker compose up -d' để khởi động.",
+      "Khởi động app bằng docker compose.",
       "Mở URL staging trong browser, thấy app hiển thị bình thường là pass.",
     ],
     failFast: "không truy cập được URL staging",
@@ -80,8 +79,8 @@ export const pipelineStages = [
     stage: "Deploy prod",
     phase: "Deployment",
     requirement: [
-      "SSH vào server, pull image rồi chạy 'docker compose up -d'.",
-      "Có script 'rollback.sh' đổi tag image về bản trước rồi 'docker compose up -d' lại.",
+      "SSH vào server, pull image mới rồi khởi động lại bằng docker compose.",
+      "Có script rollback đổi tag image về bản trước và khởi động lại app.",
       "Gọi 1 endpoint sau khi up xong để xác nhận app chạy bình thường.",
     ],
     failFast: "endpoint prod không trả status 200 sau deploy",
@@ -97,41 +96,40 @@ export const groups = [
   {
     id: "nhom-1",
     number: 1,
-    name: "Phân loại cảm xúc",
-    short: "Emotion",
+    name: "Driver Drowsiness Detector",
+    short: "Drowsiness",
     tone: "violet",
-    assignees: [],
+    assignees: ["Tùng", "Châu", "Linh"],
     summary:
-      "Xây dựng từ đầu hệ thống nhận diện cảm xúc từ ảnh và video bằng mô hình phân loại trên khuôn mặt, kèm backend HTTP và frontend web cho upload ảnh và livestream camera.",
+      "Xây dựng hệ thống phát hiện tài xế buồn ngủ qua webcam. Tính các chỉ số EAR và MAR để xác định trạng thái buồn ngủ. Có backend HTTP và frontend web hiển thị cảnh báo realtime.",
     features: [
       {
-        title: "Multi-modal Emotion Fusion: Khuôn mặt + Giọng nói",
+        title: "Realtime Drowsiness Detection via WebSocket",
         description:
-          "Hệ thống xử lý song song hai nhánh: khuôn mặt từ camera và âm thanh từ micro. Stream micro qua mô hình Speech Emotion Recognition trên window 2 giây có overlap, fusion với output video stream để cho ra emotion score chung kèm độ tin cậy.",
+          "Frontend mở webcam và stream frame về backend qua WebSocket. Backend dùng face landmark để tính EAR (độ mở mắt) và MAR (mức ngáp), kết hợp với góc đầu. Trả về trạng thái alert / drowsy / sleeping kèm độ tin cậy.",
         constraints: [
-          "Đồng bộ timestamp audio và video frame trong khoảng vài trăm ms.",
-          "Khi 1 trong 2 modality bị thiếu, pipeline vẫn trả kết quả thay vì crash.",
-          "Latency end-to-end dưới 1 giây ở P95.",
+          "Latency từ lúc client gửi frame đến lúc nhận trạng thái dưới 500 ms.",
+          "Define và implement các lỗi có thể xảy ra trong quá trình phát hiện khuôn mặt và tính landmark.",
+          "Frontend hiển thị trạng thái + confidence; UI hoạt động mượt mà.",
         ],
       },
       {
-        title: "Emotion Drift Monitoring + Online Retraining",
+        title: "Trip History + Alert Dashboard",
         description:
-          "Mỗi prediction được log kèm confidence. Có dashboard theo dõi phân phối kết quả theo tuần. Khi có dấu hiệu lệch nhiều so với lúc train thì trích sample khó ra storage, mở UI cho người gắn nhãn lại và retrain.",
+          "Backend ghi log mỗi sự kiện cảnh báo vào database theo trip_id. Dashboard hiển thị timeline cảnh báo trong 1 chuyến đi, tổng số lần buồn ngủ và biểu đồ severity theo thời gian.",
         constraints: [
-          "Có sơ đồ data flow từ inference log đến retrain và promote, có điểm dừng (kill-switch).",
-          "Schema feedback DB ghi nhận ai gắn nhãn và khi nào.",
-          "Model mới chỉ promote khi accuracy trên holdout không tụt quá 3% so với bản hiện tại.",
+          "Database lưu tối thiểu 7 ngày log, có index theo timestamp.",
+          "Có endpoint export CSV cho 1 chuyến đi tuỳ chọn.",
         ],
       },
       {
-        title: "Multi-tenant Analytics Dashboard",
+        title: "Multi-driver Account + Custom Alert Threshold",
         description:
-          "Mỗi tổ chức đăng ký 1 workspace riêng. Mỗi workspace có RBAC, heatmap cảm xúc theo lớp hoặc ca, biểu đồ xu hướng theo ngày và alert khi tỷ lệ negative vượt threshold.",
+          "Mỗi driver có account riêng. Hỗ trợ tuỳ chỉnh threshold EAR/MAR theo từng người vì mỗi người có đặc điểm khuôn mặt khác nhau. Khi cảnh báo, hệ thống phát sound + hiển thị visual alert.",
         constraints: [
-          "Privacy: không lưu ảnh khuôn mặt raw quá 14 ngày, chỉ giữ embedding kèm metadata.",
-          "Mỗi tenant có dữ liệu riêng và có RBAC cơ bản.",
-          "Có test kiểm tra 2 tenant không thấy được dữ liệu của nhau.",
+          "Đăng nhập bằng email + password.",
+          "Driver chỉnh sửa được threshold EAR/MAR và loại sound cảnh báo.",
+          "Có chế độ test cho driver thử cảnh báo trước khi dùng thật.",
         ],
       },
     ],
@@ -139,41 +137,41 @@ export const groups = [
   {
     id: "nhom-2",
     number: 2,
-    name: "Hệ thống nhận diện biển số xe thông minh",
-    short: "License plate",
+    name: "Receipt OCR + Expense Tracker",
+    short: "Receipts",
     tone: "amber",
-    assignees: [],
+    assignees: ["Đạt", "Lan", "Tú"],
     summary:
-      "Xây dựng từ đầu hệ thống detect xe và slot trống bằng object detection, có dynamic calibration theo độ phân giải camera, kèm backend HTTP và dashboard hiển thị trạng thái bãi.",
+      "Xây dựng hệ thống quản lý chi tiêu cá nhân bằng cách upload ảnh hoá đơn. Dùng OCR pretrained để trích thông tin. Có backend HTTP và frontend web cho user xem lịch sử và thống kê.",
     features: [
       {
-        title: "Nhận diện biển số + Vehicle Registry + Billing",
+        title: "Upload Receipt + Auto-extract Fields",
         description:
-          "Sau khi detect xe, crop biển số rồi đưa vào OCR phù hợp biển Việt Nam. Match kết quả vào DB xe đăng ký, ghi log entry và exit, tính phí gửi theo bảng giá có thể cấu hình.",
+          "User upload ảnh hoá đơn. Backend chạy OCR trên ảnh, parse text để trích 3 trường chính: tổng tiền, ngày, tên cửa hàng. Trả kết quả structured về frontend cho user verify và chỉnh sửa trước khi save vào database.",
         constraints: [
-          "Hậu xử lý OCR bằng whitelist ký tự và so khớp với danh sách xe đã đăng ký.",
-          "Cùng xe trong nhiều khung liên tiếp chỉ tạo 1 session, tránh ghi trùng phí.",
-          "Báo cáo thử nghiệm tối thiểu 10 ảnh tự chụp với điều kiện khó như ánh sáng yếu hoặc xe khuất một phần biển.",
+          "Hỗ trợ ảnh JPG/PNG, tối đa 5 MB.",
+          "Trích được tối thiểu 3 trường: tổng tiền, ngày, tên cửa hàng với accuracy ≥70% trên 20 hoá đơn test.",
+          "User edit được kết quả trích trước khi save.",
         ],
       },
       {
-        title: "Multi-camera Fusion + Cross-frame Tracking",
+        title: "Expense History + Personal Analytics Dashboard",
         description:
-          "Hệ thống nhận stream từ nhiều camera cùng quay 1 bãi từ các góc khác nhau qua message queue (không qua HTTP trực tiếp). Track xuyên khung và xuyên camera, không đếm trùng khi xe di chuyển giữa các zone.",
+          "Mỗi user có lịch sử hoá đơn đã upload. Dashboard hiển thị tổng chi tiêu theo tháng, biểu đồ theo category. Category do user gán tay hoặc auto-gán theo tên cửa hàng.",
         constraints: [
-          "Có cơ chế đồng bộ frame giữa các camera và mô tả cách bù khi 1 camera mất kết nối tạm thời.",
-          "Map pixel của frame về sơ đồ 2D của bãi để biết xe đang ở zone nào.",
-          "Throughput tối thiểu 2 camera ở 5 FPS xử lý song song.",
+          "Hỗ trợ ≥5 category mặc định: food, transport, shopping, bills, other.",
+          "Có biểu đồ pie theo category và line chart theo tháng.",
+          "Export báo cáo CSV cho range thời gian tuỳ chọn.",
         ],
       },
       {
-        title: "Predictive Availability + Slot Recommendation",
+        title: "Monthly Budget + Alerts",
         description:
-          "Một model time-series dự đoán độ trống của bãi ở các mốc 15, 30 và 60 phút tới dựa trên lịch sử và thời tiết. User hỏi tới sau bao nhiêu phút thì bãi còn không, hệ thống trả về xác suất kèm slot gợi ý.",
+          "User set budget hàng tháng cho từng category. Backend tự cộng dồn chi tiêu và so với budget. Khi chi tiêu vượt ngưỡng cảnh báo, hệ thống gửi notification cho user.",
         constraints: [
-          "Feature engineering với các yếu tố thời gian và thời tiết, có giải thích lựa chọn feature.",
-          "Có dashboard so sánh prediction với thực tế để theo dõi sai số theo tuần.",
-          "Latency query phía user dưới 500 ms khi cache hit.",
+          "Budget setting per category per month, user chỉnh sửa được bất cứ lúc nào.",
+          "Cảnh báo khi chi tiêu vượt 50%, 80% và 100% budget.",
+          "Có endpoint trả về status budget của 1 user trong tháng hiện tại.",
         ],
       },
     ],
@@ -181,41 +179,41 @@ export const groups = [
   {
     id: "nhom-3",
     number: 3,
-    name: "Hand Gesture",
-    short: "Hand gesture",
+    name: "Gesture DJ Mixer",
+    short: "DJ mixer",
     tone: "crimson",
-    assignees: [],
+    assignees: ["Diệu", "Sơn", "Duy Khánh"],
     summary:
-      "Xây dựng từ đầu hệ thống nhận diện và sử dụng cử chỉ tay từ webcam, kèm backend xử lý realtime và frontend tương tác với người dùng.",
+      "Xây dựng hệ thống mixer nhạc điều khiển bằng cử chỉ tay qua webcam, dùng MediaPipe Hands pretrained để track keypoint. Có backend xử lý gesture realtime và frontend Web Audio API phát mix nhạc theo cử chỉ.",
     features: [
       {
-        title: "Vietnamese Sign Language Translator dạng streaming",
+        title: "Volume + Tempo Control by Gesture",
         description:
-          "Stream webcam đi qua một mô hình trích keypoint cơ thể, sau đó đưa vào một temporal model để dịch sang câu tiếng Việt có ngữ pháp đúng. Có thể thêm TTS nếu còn thời gian.",
+          "User dùng cử chỉ tay điều khiển volume (kéo tay lên/xuống) và tempo (kéo tay trái/phải). Hỗ trợ 2 track song song, mỗi tay điều khiển 1 track. Frontend phát nhạc realtime qua Web Audio API.",
         constraints: [
-          "Streaming với sliding window có overlap, không xử lý theo từng đoạn rời.",
-          "Latency dưới 1 giây ở P95 từ kết thúc cử chỉ đến hiển thị câu dịch.",
-          "Dataset tự thu tối thiểu 50 câu của 1 đến 2 người ký, kèm annotation guideline.",
+          "Tối thiểu 2 cử chỉ rõ ràng: control volume, control tempo.",
+          "Latency từ gesture đến thay đổi âm thanh dưới 200 ms.",
+          "User upload file MP3 hoặc WAV vào từng track.",
         ],
       },
       {
-        title: "Multi-user Gesture Collaborative 3D Workspace",
+        title: "Track Switching + Crossfade",
         description:
-          "Nhiều user mỗi người 1 webcam cùng vào 1 phòng, dùng cử chỉ xoay, scale, di chuyển hoặc vẽ trên đối tượng 3D chung trong browser. Không truyền video, chỉ truyền pose keypoint giữa các client.",
+          "Mỗi DJ có playlist gồm nhiều track. User chuyển track bằng cử chỉ vẫy phải/trái. Khi switch, có hiệu ứng crossfade mượt giữa 2 track.",
         constraints: [
-          "Có cơ chế xử lý khi 2 user cùng thao tác với 1 object cùng lúc.",
-          "UX cho người dùng biết tay nào của ai đang điều khiển object nào.",
-          "Scale test với 2 user cùng phòng, FPS tối thiểu 15.",
+          "Hỗ trợ playlist ≥5 track upload sẵn.",
+          "Crossfade duration điều chỉnh được từ 1 đến 5 giây.",
+          "UI hiển thị track đang chơi và waveform realtime.",
         ],
       },
       {
-        title: "Adaptive Gesture Authentication",
+        title: "Mix Recording + Share",
         description:
-          "User đăng ký gesture passphrase là chuỗi 3 đến 5 cử chỉ trong không gian 3D. Model học pattern theo người. Mỗi lần đăng nhập: kiểm tra liveness, so với template trong DB và cập nhật template khi có drift nhẹ.",
+          "User record session mix của mình thành file audio và lưu vào account. Có trang lịch sử các mix đã record, play lại trong browser. Mỗi mix có thể share qua link công khai.",
         constraints: [
-          "Threat model với tối thiểu 2 kịch bản tấn công và biện pháp giảm thiểu tương ứng.",
-          "Khi auth fail nhiều lần liên tiếp, có cơ chế lock và fallback an toàn.",
-          "Performance một lần auth end-to-end dưới 3 giây.",
+          "Record được tối thiểu 5 phút mix mà không drop frame audio.",
+          "File mix lưu dưới dạng MP3 hoặc WAV.",
+          "Share link có thể access mà không cần đăng nhập.",
         ],
       },
     ],
@@ -223,41 +221,41 @@ export const groups = [
   {
     id: "nhom-4",
     number: 4,
-    name: "Fashion Visual Search Engine",
-    short: "Fashion search",
+    name: "Recipe Search by Food Photo",
+    short: "Recipe search",
     tone: "teal",
     assignees: [],
     summary:
-      "Xây dựng từ đầu hệ thống tìm sản phẩm thời trang bằng ảnh: sinh embedding cho ảnh và lưu vào vector database, kèm e-commerce features như giỏ hàng, brand dashboard và phân quyền.",
+      "Xây dựng hệ thống tìm công thức nấu ăn bằng ảnh món ăn, dùng CLIP pretrained sinh embedding và lưu vào vector database. Backend match ảnh với công thức trong catalog. Có frontend web cho user search, browse và save favorite công thức.",
     features: [
       {
-        title: "Hybrid Text + Image Search bằng mô hình đa modal",
+        title: "Search Recipe by Food Photo",
         description:
-          "Dùng mô hình embedding đa modal cho cả ảnh và text, cho phép user kết hợp ảnh và text trong cùng 1 query. Vector database lưu embedding của cả hai modality, hỗ trợ weighting giữa image và text khi search.",
+          "User chụp hoặc upload ảnh món ăn. Backend sinh embedding ảnh qua CLIP, tìm top-k công thức similar trong vector database. Trả về list công thức kèm ảnh thumbnail, tên món và độ similarity.",
         constraints: [
-          "Có feature flag để bật/tắt phần tìm kiếm đa modal khi cần debug.",
+          "Vector database đã index sẵn ≥500 công thức có ảnh.",
           "Latency search end-to-end dưới 1 giây ở P95.",
-          "Evaluation Recall@10 trên tập đánh giá tối thiểu 50 query có ground-truth tự build.",
+          "Mỗi công thức trả về có đủ: tên, ảnh, nguyên liệu, hướng dẫn nấu.",
         ],
       },
       {
-        title: "Federated Learning Personalized Recommendation",
+        title: "Favorite Recipes + Personal Cookbook",
         description:
-          "Lịch sử người dùng train một model nhỏ trên thiết bị. Client gửi update đã thêm noise về server, server tổng hợp thành model toàn cục. Không lưu raw behavior trên server.",
+          "User save công thức vào favorite. Trang cookbook cá nhân hiển thị các công thức đã save, group theo category. User add note riêng cho mỗi công thức.",
         constraints: [
-          "Model client-side có dung lượng nhỏ và chạy được trên thiết bị thông thường.",
-          "Có cơ chế thêm noise vào update để bảo vệ thông tin cá nhân.",
-          "Server có cơ chế kiểm tra cơ bản với client update bất thường.",
+          "Hỗ trợ ≥5 category mặc định, user tạo thêm category được.",
+          "Note có thể edit và xoá.",
+          "Có endpoint export cookbook ra PDF.",
         ],
       },
       {
-        title: "Inventory-aware Re-ranking + Sponsored Slot",
+        title: "Weekly Meal Planner + Shopping List",
         description:
-          "Khi user search, kết quả được re-rank theo stock, margin, brand bid, mùa và độ đa dạng thương hiệu. Brand dashboard hiển thị CTR, conversion theo slot và lịch sử bid.",
+          "User kéo thả các công thức đã save vào lịch tuần (7 ngày, 3 bữa). Hệ thống tự sinh shopping list bằng cách aggregate nguyên liệu từ tất cả công thức trong tuần.",
         constraints: [
-          "Learning-to-rank cơ bản dựa trên click log đã được làm sạch.",
-          "Feature store cập nhật stock, margin và bid trong vòng vài giây.",
-          "Latency tổng của similarity search, rerank và auction dưới 500 ms ở P95.",
+          "UI calendar 7x3, hỗ trợ drag-drop công thức vào ô.",
+          "Shopping list group nguyên liệu trùng, cộng dồn số lượng.",
+          "Export meal plan ra PDF hoặc gửi qua email.",
         ],
       },
     ],

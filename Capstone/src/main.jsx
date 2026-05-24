@@ -48,8 +48,7 @@ function CiCd() {
     <section className="block" id="ci-cd">
       <Eyebrow kicker="CI/CD · Pipeline" title="CI/CD pipeline" />
       <p className="lead">
-        Pipeline được trigger trên mỗi <code>push</code> vào branch <code>main</code> của repo nhóm. Chọn GitHub Actions hoặc Jenkins
-        — chọn 1 và bảo vệ được lựa chọn.
+        Pipeline được trigger trên mỗi <code>push</code> vào branch <code>main</code> của repo, chạy bằng GitHub Actions.
       </p>
       <div className="tableWrap">
         <table className="pipelineTable">
@@ -70,10 +69,7 @@ function CiCd() {
                 <tr key={row.stage} className={isPhaseStart ? "phaseStart" : undefined}>
                   <td className="stepCell">{String(index + 1).padStart(2, "0")}</td>
                   <td>
-                    <div className="stageCell">
-                      <span className="stageName">{row.stage}</span>
-                      {isPhaseStart ? <span className="phaseTag">{row.phase}</span> : null}
-                    </div>
+                    <span className="stageName">{row.stage}</span>
                   </td>
                   <td>
                     {lines.length === 1 ? (
