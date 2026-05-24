@@ -102,12 +102,12 @@ export const groups = [
     tone: "violet",
     assignees: [],
     summary:
-      "Hệ thống nhận diện cảm xúc từ ảnh và video bằng mô hình phân loại trên khuôn mặt, có backend HTTP và frontend web cho upload ảnh cùng livestream camera.",
+      "Xây dựng từ đầu hệ thống nhận diện cảm xúc từ ảnh và video bằng mô hình phân loại trên khuôn mặt, kèm backend HTTP và frontend web cho upload ảnh và livestream camera.",
     features: [
       {
         title: "Multi-modal Emotion Fusion: Khuôn mặt + Giọng nói",
         description:
-          "Thêm nhánh xử lý âm thanh song song với khuôn mặt. Stream micro vào một mô hình Speech Emotion Recognition trên window 2 giây có overlap. Sau đó fusion với output video stream để cho ra một emotion score chung kèm độ tin cậy.",
+          "Hệ thống xử lý song song hai nhánh: khuôn mặt từ camera và âm thanh từ micro. Stream micro qua mô hình Speech Emotion Recognition trên window 2 giây có overlap, fusion với output video stream để cho ra emotion score chung kèm độ tin cậy.",
         constraints: [
           "Đồng bộ timestamp audio và video frame trong khoảng vài trăm ms.",
           "Khi 1 trong 2 modality bị thiếu, pipeline vẫn trả kết quả thay vì crash.",
@@ -144,7 +144,7 @@ export const groups = [
     tone: "amber",
     assignees: [],
     summary:
-      "Hệ thống detect xe và slot trống bằng object detection, có dynamic calibration theo độ phân giải camera, backend HTTP và dashboard hiển thị trạng thái bãi.",
+      "Xây dựng từ đầu hệ thống detect xe và slot trống bằng object detection, có dynamic calibration theo độ phân giải camera, kèm backend HTTP và dashboard hiển thị trạng thái bãi.",
     features: [
       {
         title: "Nhận diện biển số + Vehicle Registry + Billing",
@@ -159,7 +159,7 @@ export const groups = [
       {
         title: "Multi-camera Fusion + Cross-frame Tracking",
         description:
-          "Nhiều camera quay cùng 1 bãi từ các góc khác nhau. Stream qua message queue thay vì HTTP trực tiếp. Track xuyên khung và xuyên camera, không đếm trùng khi xe di chuyển giữa các zone.",
+          "Hệ thống nhận stream từ nhiều camera cùng quay 1 bãi từ các góc khác nhau qua message queue (không qua HTTP trực tiếp). Track xuyên khung và xuyên camera, không đếm trùng khi xe di chuyển giữa các zone.",
         constraints: [
           "Có cơ chế đồng bộ frame giữa các camera và mô tả cách bù khi 1 camera mất kết nối tạm thời.",
           "Map pixel của frame về sơ đồ 2D của bãi để biết xe đang ở zone nào.",
@@ -186,7 +186,7 @@ export const groups = [
     tone: "crimson",
     assignees: [],
     summary:
-      "Hệ thống nhận diện và sử dụng cử chỉ tay từ webcam. Đề tài này không có codebase nền sẵn nên cần đầu tư nhiều hơn cho phần thiết kế trước khi triển khai.",
+      "Xây dựng từ đầu hệ thống nhận diện và sử dụng cử chỉ tay từ webcam, kèm backend xử lý realtime và frontend tương tác với người dùng.",
     features: [
       {
         title: "Vietnamese Sign Language Translator dạng streaming",
@@ -228,14 +228,14 @@ export const groups = [
     tone: "teal",
     assignees: [],
     summary:
-      "Hệ thống tìm sản phẩm thời trang bằng ảnh: sinh embedding cho ảnh và lưu vào vector database, có e-commerce features như giỏ hàng, brand dashboard và phân quyền.",
+      "Xây dựng từ đầu hệ thống tìm sản phẩm thời trang bằng ảnh: sinh embedding cho ảnh và lưu vào vector database, kèm e-commerce features như giỏ hàng, brand dashboard và phân quyền.",
     features: [
       {
         title: "Hybrid Text + Image Search bằng mô hình đa modal",
         description:
-          "Cho phép user kết hợp ảnh và text trong cùng 1 query. Swap mô hình embedding sang một mô hình đa modal, reindex toàn bộ vector database. Hỗ trợ weighting giữa image và text.",
+          "Dùng mô hình embedding đa modal cho cả ảnh và text, cho phép user kết hợp ảnh và text trong cùng 1 query. Vector database lưu embedding của cả hai modality, hỗ trợ weighting giữa image và text khi search.",
         constraints: [
-          "Có feature flag để A/B test giữa model cũ và model mới trước khi cắt hẳn sang.",
+          "Có feature flag để bật/tắt phần tìm kiếm đa modal khi cần debug.",
           "Latency search end-to-end dưới 1 giây ở P95.",
           "Evaluation Recall@10 trên tập đánh giá tối thiểu 50 query có ground-truth tự build.",
         ],
@@ -253,7 +253,7 @@ export const groups = [
       {
         title: "Inventory-aware Re-ranking + Sponsored Slot",
         description:
-          "Khi user search, kết quả được re-rank theo stock, margin, brand bid, mùa và độ đa dạng thương hiệu. Brand dashboard mới hiển thị CTR, conversion theo slot và lịch sử bid.",
+          "Khi user search, kết quả được re-rank theo stock, margin, brand bid, mùa và độ đa dạng thương hiệu. Brand dashboard hiển thị CTR, conversion theo slot và lịch sử bid.",
         constraints: [
           "Learning-to-rank cơ bản dựa trên click log đã được làm sạch.",
           "Feature store cập nhật stock, margin và bid trong vòng vài giây.",
