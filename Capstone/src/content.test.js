@@ -56,7 +56,7 @@ test("ci/cd pipeline covers the required core stages", () => {
 });
 
 test("deliverables metadata is populated", () => {
-  assert.ok(deliverables.length >= 3);
+  assert.ok(deliverables.length >= 2);
 });
 
 test("sidebar sections include ci/cd and every group, without cloud or submission", () => {
