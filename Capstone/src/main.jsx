@@ -150,7 +150,7 @@ function GroupBlock({ group }) {
             <p>{feature.description}</p>
             <div className="constraintHeading">
               <Lock aria-hidden="true" />
-              <span>Ràng buộc bắt buộc thiết kế</span>
+              <span>Yêu cầu cơ bản</span>
             </div>
             <ul className="constraintList">
               {feature.constraints.map((constraint) => (
