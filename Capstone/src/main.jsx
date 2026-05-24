@@ -57,7 +57,7 @@ function CiCd() {
               <th>#</th>
               <th>Stage</th>
               <th>Yêu cầu</th>
-              <th>Fail-fast khi</th>
+              <th>CI/CD failed khi</th>
             </tr>
           </thead>
           <tbody>
