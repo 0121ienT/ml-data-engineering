@@ -74,6 +74,7 @@ export const groups = [
     name: "Phân loại cảm xúc",
     short: "Emotion",
     tone: "violet",
+    assignees: [],
     summary:
       "Hệ thống nhận diện cảm xúc từ ảnh và video bằng mô hình phân loại trên khuôn mặt, có backend HTTP và frontend web cho upload ảnh cùng livestream camera.",
     features: [
@@ -115,6 +116,7 @@ export const groups = [
     name: "Hệ thống nhận diện biển số xe thông minh",
     short: "License plate",
     tone: "amber",
+    assignees: [],
     summary:
       "Hệ thống detect xe và slot trống bằng object detection, có dynamic calibration theo độ phân giải camera, backend HTTP và dashboard hiển thị trạng thái bãi.",
     features: [
@@ -156,6 +158,7 @@ export const groups = [
     name: "Hand Gesture",
     short: "Hand gesture",
     tone: "crimson",
+    assignees: [],
     summary:
       "Hệ thống nhận diện và sử dụng cử chỉ tay từ webcam. Đề tài này không có codebase nền sẵn nên cần đầu tư nhiều hơn cho phần thiết kế trước khi triển khai.",
     features: [
@@ -197,6 +200,7 @@ export const groups = [
     name: "Fashion Visual Search Engine",
     short: "Fashion search",
     tone: "teal",
+    assignees: [],
     summary:
       "Hệ thống tìm sản phẩm thời trang bằng ảnh: sinh embedding cho ảnh và lưu vào vector database, có e-commerce features như giỏ hàng, brand dashboard và phân quyền.",
     features: [

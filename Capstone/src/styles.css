@@ -484,6 +484,63 @@ svg {
     var(--paper);
 }
 
+/* ---------------- Assignee row ---------------- */
+
+.assigneeRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.7rem;
+  margin: 0 0 1.2rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 2px solid var(--accent);
+  background: rgba(15, 23, 42, 0.03);
+  border-radius: 0 6px 6px 0;
+}
+
+.assigneeLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.66rem;
+  font-weight: 880;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.assigneeLabel svg {
+  width: 14px;
+  height: 14px;
+}
+
+.assigneeList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.assigneeList li {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--ink);
+  font-size: clamp(0.78rem, 0.86vw, 0.88rem);
+  font-weight: 620;
+}
+
+.assigneePlaceholder {
+  color: var(--soft);
+  font-size: clamp(0.78rem, 0.86vw, 0.88rem);
+  font-weight: 540;
+  font-style: italic;
+}
+
 /* ---------------- Feature nav (anchor pills) ---------------- */
 
 .featureNav {

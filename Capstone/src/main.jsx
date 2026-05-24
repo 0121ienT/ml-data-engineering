@@ -6,6 +6,7 @@ import {
   Lock,
   PackageOpen,
   Sparkles,
+  UserCircle2,
   Users,
   Workflow,
 } from "lucide-react";
@@ -98,12 +99,28 @@ function CiCd() {
 }
 
 function GroupBlock({ group }) {
+  const assignees = group.assignees ?? [];
   return (
     <section className="block groupBlock" id={group.id} data-tone={group.tone}>
       <Eyebrow kicker={`Đề tài · Nhóm ${group.number}`} title={group.name} />
       <p className="lead">
         <strong>Bối cảnh:</strong> {group.summary}
       </p>
+      <div className="assigneeRow">
+        <span className="assigneeLabel">
+          <UserCircle2 aria-hidden="true" />
+          Người được phân công
+        </span>
+        {assignees.length > 0 ? (
+          <ul className="assigneeList">
+            {assignees.map((name) => (
+              <li key={name}>{name}</li>
+            ))}
+          </ul>
+        ) : (
+          <span className="assigneePlaceholder">— chưa phân công</span>
+        )}
+      </div>
       <nav className="featureNav" aria-label={`3 tính năng của ${group.name}`}>
         {group.features.map((feature, index) => (
           <a key={feature.title} href={`#${group.id}-f${index + 1}`}>
