@@ -2,7 +2,7 @@ export const pipelineStages = [
   {
     stage: "Lint & format",
     phase: "Kiểm tra code",
-    requirement: "Black hoặc Ruff cho Python, ESLint cho JS/TS",
+    requirement: "Python: Black (line-length 88) + Ruff (rule set E/F/I/B) cấu hình trong pyproject.toml. JS/TS: Prettier (printWidth 100, singleQuote) + ESLint cấu hình trong .prettierrc và .eslintrc. CI chạy chế độ --check (không auto-fix), commit hooks không bắt buộc.",
     failFast: "code không đúng style",
   },
   {
